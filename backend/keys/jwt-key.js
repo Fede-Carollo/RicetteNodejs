@@ -1,0 +1,1 @@
+module.exports.JWT_KEY = "eafiurshdnglksfjopewgnribnrlgrjogp3506409weejiewgjerjg";

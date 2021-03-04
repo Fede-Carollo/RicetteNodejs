@@ -1,0 +1,12 @@
+.flex-div{
+    display: flex;
+    align-items: center;
+}
+
+.flex-div.flex-around-distance{
+    justify-content: space-between;
+}
+
+.reduce-font{
+    font-size: 0.75em;
+}
