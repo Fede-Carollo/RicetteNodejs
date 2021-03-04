@@ -10,3 +10,54 @@
 .reduce-font{
     font-size: 0.75em;
 }
+
+.snackbar{
+    width: 30vw;
+    position: fixed;
+    bottom: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: .5s;
+    background-color: #0085A1;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 15px 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 0;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    transition: ease all .5s
+}
+
+@media (max-width: 768px) {
+    .flex-div{
+        flex-direction: column;
+    }
+
+    .snackbar{
+        width: 80vw
+    }
+
+    #register{
+        width: 50%
+    }
+}
+
+@media (max-width: 992px) {
+    .snackbar{
+        width: 50vw;
+    }
+}
+
+.snackbar.active{
+    bottom: 5%
+}
+
+.left-shadow{
+    -webkit-box-shadow: 2px 3px 5px 1px rgba(0,133,161,0.42);
+    -moz-box-shadow: 2px 3px 5px 1px rgba(0,133,161,0.42);
+    box-shadow: 2px 3px 5px 1px rgba(0,133,161,0.42);
+
+}

@@ -5,7 +5,6 @@ const jwtkey = require('../keys/jwt-key')
 
 
 exports.login= (req, res, next) => {
-    console.log("Welaaaaa");
     const email = req.body.email;
     const password = req.body.password;
     let fetchedUser = null;
@@ -14,7 +13,7 @@ exports.login= (req, res, next) => {
         User.findOne({email: email})
         .then(user => {
             if(!user) {
-                return res.status(401).json({message: "Autenticazione fallita"});
+                return res.status(401).json({message: "Email o password errati"});
             }
             else
             {
@@ -23,17 +22,18 @@ exports.login= (req, res, next) => {
                 .then(valid => {
                     if(!valid)
                     {
-                        return res.status(401).json({message: "Autenticazione fallita"});
+                        return res.status(401).json({message: "Email o password errati"});
                     }
-                    const token = jwt.sign({userId: fetchedUser._id }, jwtkey.JWT_KEY, 
-                    {
-                        expiresIn: "1h"
-                    });
-        
+                    const token = createToken({userId: fetchedUser._id });
                     res.status(200).json({
                         token: token,
-                        expiresIn: 3600,
-                        tokenId: fetchedUser._id
+                        expiresIn: 10,
+                        tokenId: fetchedUser._id,
+                        message: "user fetched successfully",
+                        user: {
+                            nome: fetchedUser.nome,
+                            cognome: fetchedUser.cognome
+                        }
                     })
                 })
             }
@@ -48,5 +48,60 @@ exports.login= (req, res, next) => {
 }
 
 exports.signup = (req, res, next) => {
+    bcrypt.hash(req.body.password, 10)
+        .then(hashedPassword => {
+            const params = {
+                email: req.body.email,
+                password: hashedPassword,
+                nome: req.body.nome,
+                cognome: req.body.cognome
+            };
+            const user = new User(params);
+            user.save()
+            .then((specs) => {
+                const userId = specs.id;
+                const token = createToken({userId: userId});
+                const user = {
+                    nome: req.body.nome,
+                    cognome: req.body.cognome
+                }
+                res.status(201).json({message: "User created successfully", token: token, expiresIn: 3600, tokenId: userId, user: user});
+            })
+            .catch(err => {
+                if(err.message.indexOf("unique") != -1) //violazione vincolo unique su mail
+                {
+                    res.status(401).json({message: "L'email inserita è già registrata"})
+                    return;
+                }
+                res.status(500).json({message: "Errore nella creazione dell'utente"});
+            })
+        })
+        .catch(err => {
+            res.status(500).json({message: "Errore nella creazione dell'utente"});
+        })
+}
 
+exports.checkToken = (req, res, next) => {
+    //TODO: caricare utente
+    User.findOne({_id: req.userData.id})
+    .then((user) => {
+        res.status(200).json({
+            message: "token verificato",
+            expiresIn: 3600,
+            tokenId: user._id,
+            user: {
+                nome: user.nome,
+                cognome: user.cognome
+            }
+        });
+    })
+    
+}
+
+function createToken(params, expires = "1h") {
+    const token = jwt.sign(params, jwtkey.JWT_KEY, 
+    {
+        expiresIn: expires
+    });
+    return token;
 }

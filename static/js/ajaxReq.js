@@ -1,3 +1,5 @@
+import { Auth } from './auth.js'
+
 export function ajaxCall (url, method, parameters) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
@@ -9,7 +11,16 @@ export function ajaxCall (url, method, parameters) {
 			headers: {
 				authorization: /*auth.token ||*/ localStorage.getItem("getItem")
 			},
-			success: (data) => {resolve(data)},
+			success: (data, textStatus, request) => {
+				const token = request.getResponseHeader("token");
+				const expiresDuration = request.getResponseHeader("token-expires-in");
+				if(expiresDuration && token)
+				{
+					const auth = Auth.instanceClass();
+					auth.refreshToken(+expiresDuration, token);
+				}
+				resolve(data)
+			},
 			error : (jqXHR, test_status, str_error) => {reject(jqXHR, test_status, str_error)}
 		});
 	})
