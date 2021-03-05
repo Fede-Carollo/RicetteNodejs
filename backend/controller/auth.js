@@ -27,7 +27,7 @@ exports.login= (req, res, next) => {
                     const token = createToken({userId: fetchedUser._id });
                     res.status(200).json({
                         token: token,
-                        expiresIn: 10,
+                        expiresIn: 3600,
                         tokenId: fetchedUser._id,
                         message: "user fetched successfully",
                         user: {
@@ -85,7 +85,9 @@ exports.checkToken = (req, res, next) => {
     //TODO: caricare utente
     User.findOne({_id: req.userData.id})
     .then((user) => {
+        const token = createToken({userId: req.userData.id});
         res.status(200).json({
+            token: token,
             message: "token verificato",
             expiresIn: 3600,
             tokenId: user._id,
@@ -94,6 +96,9 @@ exports.checkToken = (req, res, next) => {
                 cognome: user.cognome
             }
         });
+    })
+    .catch(err => {
+        console.error(err);
     })
     
 }

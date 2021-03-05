@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-    mongoose.connect("mongodb://localhost:27017/ricette", {useNewUrlParser: true, useUnifiedTopology: true})
+    mongoose.connect("mongodb://localhost:27017/ricette", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
     .then(() => next())
     .catch((err) => res.status(500).json({message: "Impossibile connettersi al DB"}));
 })

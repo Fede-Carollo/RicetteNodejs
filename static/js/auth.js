@@ -1,5 +1,4 @@
-import { ajaxCall } from './ajaxReq.js'
-export class Auth {
+class Auth {
     static _instancedClass = null;
 
     //classe singleton perché user è salvato nella classe
@@ -13,9 +12,10 @@ export class Auth {
 
     getAuthState = () => {
         return new Promise((resolve, reject) => {
-            if(hasAlreadyTriedAuth)
+            if(this.hasAlreadyTriedAuth)
             {
-               resolve(this.user.isLogged);    
+                this.user = JSON.parse(localStorage.getItem("user"));
+                resolve(this.user.isLogged);    
             }
             else
             {
@@ -28,14 +28,14 @@ export class Auth {
         
     }
 
-    login(params) {
+    login(params, redirectRoute = "/") {
         return new Promise(function(resolve, reject) {
             ajaxCall("/api/auth/login", "POST", params)
             .then(data => {
                 console.log(data);
                 Auth._instancedClass.saveLogin(data);
                 Auth._instancedClass.hasAlreadyTriedAuth = true;
-                //window.location.href = "/"; //TODO: redirect specifico
+                window.location.href = redirectRoute; //TODO: redirect specifico
                 resolve();
             })
             .catch((jqXHR, test_status, str_error) => {
@@ -79,7 +79,7 @@ export class Auth {
         localStorage.setItem("token", "Bearer " + response.token);
         localStorage.setItem("expiresIn", expirationDate.toISOString());
         localStorage.setItem("user", JSON.stringify(this.user));
-        this.setAuthTimer(response.expiresIn);
+        this.setAuthTimer(response.expiresIn * 1000);
         this.tokenInfo = { 
             token: response.token,
             expiresIn: expirationDate
@@ -94,7 +94,7 @@ export class Auth {
             token: token, expiresIn: expirationDate
         }
         clearTimeout(this.tokenTimer);
-        this.setAuthTimer(expiresDuration);
+        this.setAuthTimer(expiresDuration * 1000);
     }
 
     tokenInfo = {
@@ -102,40 +102,43 @@ export class Auth {
         expiresIn: null
     };
 
-    autoAuthUser = new Promise((resolve, reject) => {
-        this.hasAlreadyTriedAuth = true;
-        this.tokenInfo = { token: localStorage.getItem("token"), expiresIn: new Date(localStorage.getItem("expiresIn")) };
-        if(this.tokenInfo.token && this.tokenInfo.expiresIn)
-        {
-            const now = new Date();
-            const expiresIn = this.tokenInfo.expiresIn.getTime() - now.getTime();
-            if(expiresIn > 0 )
+    autoAuthUser = () => {
+        return new Promise((resolve, reject) => {
+            this.hasAlreadyTriedAuth = true;
+            this.tokenInfo = { token: localStorage.getItem("token"), expiresIn: new Date(localStorage.getItem("expiresIn")) };
+            if(this.tokenInfo.token && this.tokenInfo.expiresIn)
             {
-                //TODO: controllo sul server
-                ajaxCall("/api/auth/checkToken", "POST", null)
-                    .then((data) => {
-                        this.saveLogin(data);
-                    })
-                    .catch(() => {
-                        this.clearAuthData();
-                        this.user = {};
-                    })
-                this.setAuthTimer(expiresIn);
-                this.user = JSON.parse(localStorage.getItem("user"));
-                resolve(true);
+                const now = new Date();
+                const expiresIn = this.tokenInfo.expiresIn.getTime() - now.getTime();
+                if(expiresIn > 0 )
+                {
+                    //TODO: controllo sul server
+                    ajaxCall("/api/auth/checkToken", "POST", null)
+                        .then((data) => {
+                            this.saveLogin(data);
+                            this.setAuthTimer(expiresIn);
+                            resolve(true);
+                        })
+                        .catch(() => {
+                            this.clearAuthData();
+                            this.user = {};
+                            resolve(false);
+                        })
+                    
+                }
+                else
+                {
+                    this.clearAuthData();
+                    resolve(false);
+                }
             }
             else
             {
                 this.clearAuthData();
                 resolve(false);
             }
-        }
-        else
-        {
-            this.clearAuthData();
-            resolve(false);
-        }
-    });
+        });
+    } 
 
     setAuthTimer (duration) {
         this.tokenTimer = setTimeout(() => {
@@ -152,10 +155,9 @@ export class Auth {
         this.tokenInfo = { token: null, expiresIn: null};
         this.user = {
             isLogged: false,
-            email: null,
+            id: null,
             nome: null,
-            cognome: null,
-            isManager: null
+            cognome: null
         } 
         location.reload();
     }

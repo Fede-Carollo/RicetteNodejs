@@ -20,6 +20,8 @@
 
   <!-- Custom styles for this template -->
   <link href="css/clean-blog.min.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet" type="text/css">
+
 
 </head>
 
@@ -53,14 +55,18 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/contact-bg.jpg')">
+  <header class="masthead" style="background-image: url('img/new-recipe.jpg')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="page-heading">
-            <h1>Contact Me</h1>
-            <span class="subheading">Have questions? I have answers.</span>
+            <div class="flex-div">
+              <input type="text" id="title" class="heading-input" value="Nuova ricetta"></input>
+            </div>
+            <div class="flex-div">
+              <textarea maxlength="200" type="text" id="subtitle" class="subheading-input">Una piccola descrizione</textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -71,11 +77,71 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>
-        <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
-        <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
-        <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-        <form name="sentMessage" id="contactForm" novalidate>
+        <form name="recipeForm" id="recipeForm" novalidate>
+          <div class="row">
+            <div class="col">
+              <div class="form-group controls">
+                <label for="category">Categoria</label>
+                <select name="category" class="form-control" placeholder="Categoria ricetta" id="category">
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group controls">
+                <label for="difficulty">Difficoltà</label>
+                <select name="difficulty" class="form-control" placeholder="Difficoltà" id="difficulty">
+                  <option selected value="Principiante">Principiante</option>
+                  <option value="Intermedio">Intermedio</option>
+                  <option value="Esperto">Esperto</option>
+              </select>
+              </div>
+              
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="form-group controls">
+                <label for="newIngrediente">Inserisci ingrediente</label>
+                <input type="text" class="form-control" placeholder="Inserisci ingrediente" id="newIngrediente">
+                <button type="button" class="btn btn-primary mt-2 w-100" id="addNewIngrediente">Aggiungi ingrediente</button>
+              </div>
+            </div>
+            <div class="col">
+              <h3>Ingredienti</h3>
+              <ul id="ingredienti" class="reduce-font">
+                <li class="example-li">
+                  <div class="flex-li">
+                    <span>Vedi qui la lista degli ingredienti</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+          <div id="steps-container" class="mt-5">
+            <div id="step0">
+              <h2>Step 1</h2>
+              <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                  <label>Titolo</label>
+                  <input type="text" class="form-control" placeholder="Titolo" id="stepTitle0">
+                  <p class="help-block text-danger" id="stepTitleError0"></p>
+                </div>
+                <div class="form-group floating-label-form-group controls">
+                  <label>Descrizione</label>
+                  <textarea class="form-control" id="stepDescr0" placeholder="Descrizione"></textarea>
+                  <p class="help-block text-danger" id="stepDescrError0"></p>
+                </div>
+                <div class="form-group controls">
+                  <input type="file" multiple accept="image/*" id="stepImgs0" style="display:none">
+                  <button type="button" id="stepSelectImgs0" class="btn btn-primary mt-4">Carica immagini (Facoltativo)</button>
+                  <p class="help-block text-danger" id="stepImgsError0"></p>
+                  <div class="container-photos" id="stepContainerImgs0"></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
               <label>Name</label>
@@ -87,13 +153,6 @@
             <div class="form-group floating-label-form-group controls">
               <label>Email Address</label>
               <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
-              <p class="help-block text-danger"></p>
-            </div>
-          </div>
-          <div class="control-group">
-            <div class="form-group col-xs-12 floating-label-form-group controls">
-              <label>Phone Number</label>
-              <input type="tel" class="form-control" placeholder="Phone Number" id="phone" required data-validation-required-message="Please enter your phone number.">
               <p class="help-block text-danger"></p>
             </div>
           </div>
@@ -161,6 +220,9 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/clean-blog.min.js"></script>
+  <script src="js/ajaxReq.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/new-recipe.js"></script>
 
 </body>
 

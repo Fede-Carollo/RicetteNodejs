@@ -1,6 +1,4 @@
-import { Auth } from './auth.js'
-
-export function ajaxCall (url, method, parameters) {
+function ajaxCall (url, method, parameters) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: url, //default: currentPage
@@ -9,7 +7,7 @@ export function ajaxCall (url, method, parameters) {
 			dataType: "json",
 			data: parameters,
 			headers: {
-				authorization: /*auth.token ||*/ localStorage.getItem("getItem")
+				authorization: /*auth.token ||*/ localStorage.getItem("token")
 			},
 			success: (data, textStatus, request) => {
 				const token = request.getResponseHeader("token");

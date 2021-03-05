@@ -1,12 +1,25 @@
 "use strict";
 
 const ANIMATION_TIME = 250; //ms
-import { Auth } from "./auth.js"
 const auth = Auth.instanceClass();
 jQuery(() => {
-    
-    $("form [id$='Error'").hide()
-    $("#login").on("click", login);
+
+    auth.getAuthState()
+        .then(isLogged => {
+          if(isLogged)  
+          {
+                const params = new URLSearchParams(window.location.search);
+                const from = params.get('from');
+                if(from)
+                window.location.href = from;
+                else
+                    window.location.href = "/";
+          }
+          else {
+            $("form [id$='Error'").hide()
+            $("#login").on("click", login);
+          }
+        })
 })
 
 function login(){
