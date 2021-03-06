@@ -2,9 +2,17 @@ const express = require('express');
 const router = express.Router();
 const RicetteController = require('../controller/ricette');
 const checkAuth = require('../middleware/check-auth');
+const checkFolder = require('../middleware/check-folder');
+const saveFiles = require('../middleware/save-files');
 
 //router.get("/:id", AuthController.confirmMail)
 
 router.get("/categorie", RicetteController.GetAllCategorie);
+
+router.post("", 
+        checkAuth,
+        checkFolder,
+        saveFiles,
+        RicetteController.PostRicetta)
 
 module.exports = router

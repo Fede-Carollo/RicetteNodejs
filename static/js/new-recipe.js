@@ -4,7 +4,7 @@ auth.getAuthState()
     .then((isLogged) => {
         if(!isLogged)
         {
-            window.location.href = "/"
+            window.location.href = "/login.html?from=nuova-ricetta.html"
         }
     })
 
@@ -221,9 +221,14 @@ function saveRecipe() {
         console.log(key[0], key[1]);
     }
 
-    ajaxCall("/api/ricette", "POST", data, true)
+    //$("#btnSaveRecipe").prop("disabled", true);   //TODO: scommentare
+    ajaxMultipartCall("/api/ricette", "POST", data, $("#title").val().trim())
         .then((response) => {
-
+            window.location.href = "/";
+        })
+        .catch((error) => {
+            $("#btnSaveRecipe").prop("disabled", false);
+            //TODO: snackbar
         })
 }
 
@@ -243,7 +248,7 @@ function checkRecipeValidity() {
         return isValid;
     }
 
-    else if(!$("#timeNeeded").val() || $("#timeNeeded").val() < 0){
+    else if(!$("#timeNeeded").val() || $("#timeNeeded").val() <= 0){
         scrollToError($("#timeNeeded"));
         $("#timeNeeded").val(0)
         isValid = false;
@@ -304,26 +309,22 @@ function createFormData() {
     formData.append("category", $("#category").val());
     formData.append("difficulty", $("#difficulty").val());
     formData.append("timeNeeded", $("#timeNeeded").val());
-    let ingredienti = [];
-    //TODO: fix virgole
+    formData.append("stepNumber", stepAttuale + 1);
     $.each($("#ingredienti li div span.li-ingredienti"), (i, ingrediente) => {
-        ingredienti.push(ingrediente.textContent);
+        formData.append("ingredienti", ingrediente.textContent);
     })
-    formData.append("ingredienti", ingredienti);
-    let steps = []
-    for(let i = 0; i < stepAttuale; i++) {
-        let step = {
-            "titleStep": $("#stepTitle" + i),
-            "descrStep": $("#stepDescr" + i)   
-        }
-        steps.push(step);
+    for(let i = 0; i <= stepAttuale; i++) {
+        formData.append("step" + i, $("#stepTitle" + i).val())
+        formData.append("step" + i , $("#stepDescr" + i).val());
     }
 
     for(let json of files) {
         const position = json.position;
         for(let j in json.files)
         {
-            formData.append("img-" + j +"-step-" + position + "-by-" + auth.user.cognome + "-" + auth.user.nome, json.files[j]);
+            console.log(json.files[j])
+            const ext = json.files[j].name.substr(json.files[j].name.lastIndexOf("."));
+            formData.append("imgs", json.files[j],"step-"+ position + "-img-" + j + ext);
         }
     }
     return formData;

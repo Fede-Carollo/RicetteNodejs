@@ -1,4 +1,5 @@
 const Categoria = require('../models/categorie');
+const Ricetta = require('../models/ricetta');
 const User = require('../models/user');
 
 exports.GetAllCategorie = (req, res, next) => {
@@ -9,4 +10,59 @@ exports.GetAllCategorie = (req, res, next) => {
             })
             res.status(200).json({message: "Categories fetched successfully", categorie: nomi});
         } )
+}
+
+exports.PostRicetta = (req, res, next) => {
+    User.findById(req.userData.id, {cognome: 1, nome: 1, _id: 0})
+    .then(user => {
+        const creatorName = user.cognome + " " + user.nome;
+        const ricetta = {
+            creatorId: req.userData.id,
+            creatorName: creatorName,
+            category: req.body.category,
+            title: req.body.title,
+            description: req.body.description,
+            difficulty: req.body.difficulty,
+            ingredienti: typeof(req.body.ingredienti) == 'object'? [...req.body.ingredienti]: [req.body.ingredienti],
+            timeNeeded: req.body.timeNeeded,
+            steps: []
+        }
+    
+        for(let i = 0; i < +req.body.stepNumber; i++) {
+            const bodyStep = req.body["step" + i];
+            const stepFiles = req.files.filter(file => {
+                const step =  parseInt(file.originalname.substr(5)).toString();
+                return step == i;
+            })
+    
+            const filePaths =  stepFiles.map(file => {
+                return file.path.replace("backend\\","");
+            })
+            const step = {
+                title: bodyStep[0],
+                description: bodyStep[1],
+                imgs: [...filePaths]
+            }
+            //TODO: inventarsi come aggiungere i file
+            ricetta.steps.push(step);
+        }
+    
+        const document = new Ricetta(ricetta);
+    
+        document.save()
+            .then((specs) => {
+                console.log(specs);
+                res.status(201).json({message: "recipe created successfully"})
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json({message: "Errore nella creazione della ricetta"});
+            })
+    })
+    .catch((err) => {
+        res.status(500).json({message: "Errore nella creazione della ricetta"});
+    })
+
+    
+
 }

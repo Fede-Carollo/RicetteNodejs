@@ -2,22 +2,27 @@
 
 const ANIMATION_TIME = 250; //ms
 const auth = Auth.instanceClass();
-jQuery(() => {
+let from;
 
+jQuery(() => {
+    const params = new URLSearchParams(window.location.search);
+    from = params.get('from');
     auth.getAuthState()
         .then(isLogged => {
           if(isLogged)  
           {
-                const params = new URLSearchParams(window.location.search);
-                const from = params.get('from');
+                
                 if(from)
-                window.location.href = from;
+                    window.location.href = from;
                 else
                     window.location.href = "/";
           }
           else {
             $("form [id$='Error'").hide()
             $("#login").on("click", login);
+
+            if(from)
+                $("#linkRegister").prop("href", $("#linkRegister").prop("href") + "?from=" + from);
           }
         })
 })
@@ -29,7 +34,11 @@ function login(){
         email: $("#email").val(),
         password: $("#password").val()
     }
-    auth.login(loginParams)
+    let redirect = undefined;
+    if(from) {
+        redirect = "/" + from;
+    }
+    auth.login(loginParams, redirect || "/")
         .catch(errMsg => {
             console.log(errMsg);
             $(".snackbar").addClass("active").text(errMsg);

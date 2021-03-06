@@ -28,7 +28,7 @@ class Auth {
         
     }
 
-    login(params, redirectRoute = "/") {
+    login(params, redirectRoute) {
         return new Promise(function(resolve, reject) {
             ajaxCall("/api/auth/login", "POST", params)
             .then(data => {
@@ -45,13 +45,14 @@ class Auth {
         })
     }
 
-    signup(params) {
+    signup(params, redirectRoute = "/") {
         return new Promise(function(resolve, reject) {
             ajaxCall("/api/auth/signup", "POST", params)
             .then(data => {
                 console.log(data);
-                //TODO: salvare utente
-                window.location.href = "/";
+                Auth._instancedClass.saveLogin(data);
+                Auth._instancedClass.hasAlreadyTriedAuth = true;
+                window.location.href = redirectRoute;
                 resolve();
             })
             .catch((jqXHR, test_status, str_error) => {

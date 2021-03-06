@@ -4,11 +4,29 @@ const ANIMATION_TIME = 250; //ms
 import { Auth } from "./auth.js"
 const auth = Auth.instanceClass();
 
+let from;
 
 jQuery(() => {
-    $("form [id$='Error'").hide()
-    $("#register").on("click", register);
-    $("form input").trigger("input");
+    const params = new URLSearchParams(window.location.search);
+    from = params.get('from');
+    auth.getAuthState()
+    .then((isLogged) => {
+        if(isLogged) {
+                if(from)
+                    window.location.href = from;
+                else
+                    window.location.href = "/";
+        }
+        else
+        {
+            $("form [id$='Error'").hide()
+            $("#register").on("click", register);
+            $("form input").trigger("input");
+
+            if(from)
+                $("#linkLogin").prop("href", $("#linkLogin").prop("href") + "?from=" + from);
+        }
+    })
 })
 
 function register() {
@@ -20,7 +38,12 @@ function register() {
         nome: $("#nome").val(),
         cognome: $("#cognome").val()
     }
-    auth.signup(signupParams)
+
+    let redirect = undefined;
+    if(from) {
+        redirect = "/" + from;
+    }
+    auth.signup(signupParams, redirect || "/")
         .catch(errMsg => {
             console.log(errMsg);
             $(".snackbar").addClass("active").text(errMsg);
