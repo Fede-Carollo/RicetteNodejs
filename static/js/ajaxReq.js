@@ -1,9 +1,10 @@
-function ajaxCall (url, method, parameters) {
+function ajaxCall (url, method, parameters, noContent = false ) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: url, //default: currentPage
 			type: method,
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			contentType: noContent? false: "application/x-www-form-urlencoded; charset=UTF-8",
+			processData: !noContent,
 			dataType: "json",
 			data: parameters,
 			headers: {

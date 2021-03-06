@@ -79,12 +79,19 @@ header.masthead .page-heading{
         padding: 100px 0;
         padding-bottom: 50px;
     }
+
+
+
 }
 
 @media (max-width: 600.98px){
     #title, #subtitle{
         width: 90vw
     }
+}
+
+#title::placeholder, #subtitle::placeholder{
+    color: rgba(255,255,255, .8)
 }
 
 
@@ -171,6 +178,12 @@ div.flex-li{
     grid-gap: 10px;
 }
 
+@media (max-width: 768px) {
+    .container-photos{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 .preview-img{
     position: relative;
 }
@@ -193,4 +206,18 @@ div.flex-li{
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+
+.flex-container-btns{
+    display: flex; flex-direction: row-reverse;
+}
+
+.flex-container-btns > button{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.title-step{
+    font-family: Lora;
 }
