@@ -114,10 +114,22 @@ h1, h2, h3 {
   0% { -webkit-transform: rotate(0deg);}
   100% { -webkit-transform: rotate(360deg);}
 }
+
+@keyframes clockwise {
+  0% { -webkit-transform: rotate(0deg);}
+  100% { -webkit-transform: rotate(360deg);}
+}
+
 @-webkit-keyframes anticlockwise {
   0% { -webkit-transform: rotate(360deg);}
   100% { -webkit-transform: rotate(0deg);}
 }
+
+@keyframes anticlockwise {
+  0% { -webkit-transform: rotate(360deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
 @-webkit-keyframes clockwiseError {
   0% { -webkit-transform: rotate(0deg);}
   20% { -webkit-transform: rotate(30deg);}
@@ -125,12 +137,29 @@ h1, h2, h3 {
   60% { -webkit-transform: rotate(30deg);}
   100% { -webkit-transform: rotate(0deg);}
 }
+
+@keyframes clockwiseError {
+  0% { -webkit-transform: rotate(0deg);}
+  20% { -webkit-transform: rotate(30deg);}
+  40% { -webkit-transform: rotate(25deg);}
+  60% { -webkit-transform: rotate(30deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
 @-webkit-keyframes anticlockwiseErrorStop {
   0% { -webkit-transform: rotate(0deg);}
   20% { -webkit-transform: rotate(-30deg);}
   60% { -webkit-transform: rotate(-30deg);}
   100% { -webkit-transform: rotate(0deg);}
 }
+
+@keyframes anticlockwiseErrorStop {
+  0% { -webkit-transform: rotate(0deg);}
+  20% { -webkit-transform: rotate(-30deg);}
+  60% { -webkit-transform: rotate(-30deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
 @-webkit-keyframes anticlockwiseError {
   0% { -webkit-transform: rotate(0deg);}
   20% { -webkit-transform: rotate(-30deg);}
@@ -138,19 +167,31 @@ h1, h2, h3 {
   60% { -webkit-transform: rotate(-30deg);}
   100% { -webkit-transform: rotate(0deg);}
 }
+@keyframes anticlockwiseError {
+  0% { -webkit-transform: rotate(0deg);}
+  20% { -webkit-transform: rotate(-30deg);}
+  40% { -webkit-transform: rotate(-25deg);}
+  60% { -webkit-transform: rotate(-30deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
 .gear.one {
+    animation: anticlockwiseErrorStop 2s linear infinite;
   -webkit-animation: anticlockwiseErrorStop 2s linear infinite;
 }
 .gear.two {
+    animation: anticlockwiseError 2s linear infinite;
   -webkit-animation: anticlockwiseError 2s linear infinite;
 }
 .gear.three {
+    animation: clockwiseError 2s linear infinite;
   -webkit-animation: clockwiseError 2s linear infinite;
 }
 .loading .gear.one, .loading .gear.three {
+    animation: clockwise 3s linear infinite;
   -webkit-animation: clockwise 3s linear infinite;
 }
 .loading .gear.two {
+    animation: anticlockwise 3s linear infinite;
   -webkit-animation: anticlockwise 3s linear infinite;
 }
 

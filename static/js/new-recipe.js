@@ -226,15 +226,21 @@ function saveRecipe() {
         .then((response) => {
             window.location.href = "/";
         })
-        .catch((error) => {
+        .catch((jqXHR, test_status, str_error) => {
+            console.log(jqXHR);
             $("#btnSaveRecipe").prop("disabled", false);
             //TODO: snackbar
+            $(".snackbar").addClass("active").text(jqXHR.responseJSON.message);
+            //scrollToError($("#title"))
+            setTimeout(() => {
+                $(".snackbar").removeClass("active");
+            }, 5000)
         })
 }
 
 function checkRecipeValidity() {
     let isValid = true;
-    if($("#title").val() == "" || $("#title").val().indexOf("\\")) //titolo ricetta mancante
+    if($("#title").val() == "") //titolo ricetta mancante
     {
         scrollToError($("#title"));
         isValid = false;

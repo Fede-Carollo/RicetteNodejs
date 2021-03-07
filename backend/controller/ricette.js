@@ -70,7 +70,7 @@ exports.PostRicetta = (req, res, next) => {
 exports.GetAllRecipes = (req, res, next) => {
     const toSkip = 0;
     const perPage = 10;
-    Ricetta.find({}).skip(toSkip).limit(perPage)
+    Ricetta.find({}).skip(toSkip).limit(perPage).sort({createdAt: -1})
         .then((ricette) => {
             res.status(200).json({message: "recipes fetched successfully", ricette: ricette});
         })

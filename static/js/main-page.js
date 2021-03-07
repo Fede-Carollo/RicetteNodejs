@@ -27,10 +27,13 @@ function createRecipe(recipe) {
         <h5 class="card-title text-center">${recipe.title}</h5>
         <div class="recipe-info">
         <div>
-        <span>Difficoltà: </span> <span>${recipe.difficulty}</span>
+            <div>${recipe.difficulty}</div>
         </div>
         <div>
-          <span>Tempo necessario: </span> <span><i class="fa fa-clock"></i> ${recipe.timeNeeded}'</span>
+            <div>${recipe.category}</div>
+        </div>
+        <div>
+          <div>Tempo: <i class="fa fa-clock"></i> ${recipe.timeNeeded}'</div>
         </div>
       </div>` + 
         `<div class="card-text">

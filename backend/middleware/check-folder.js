@@ -9,7 +9,7 @@ module.exports = (req,res, next) => {
     const recipe = req.headers.recipename;
     const recipePath = path.join(userpath,recipe);
     if(fs.existsSync(recipePath))
-        res.status(401).json({message: 'recipe already exists'})
+        res.status(401).json({message: 'Esiste già una ricetta con questo nome! Prova a cambiarlo'})
     else
     {
         fs.mkdirSync(recipePath);
