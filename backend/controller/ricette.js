@@ -66,3 +66,15 @@ exports.PostRicetta = (req, res, next) => {
     
 
 }
+
+exports.GetAllRecipes = (req, res, next) => {
+    const toSkip = 0;
+    const perPage = 10;
+    Ricetta.find({}).skip(toSkip).limit(perPage)
+        .then((ricette) => {
+            res.status(200).json({message: "recipes fetched successfully", ricette: ricette});
+        })
+        .catch((err) => {
+            res.status(500).json({message: "Impossibile caricare le ricette al momento"});
+        })
+}

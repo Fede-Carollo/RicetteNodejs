@@ -15,4 +15,5 @@ router.post("",
         saveFiles,
         RicetteController.PostRicetta)
 
+router.get("", RicetteController.GetAllRecipes)
 module.exports = router

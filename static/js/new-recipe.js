@@ -234,7 +234,7 @@ function saveRecipe() {
 
 function checkRecipeValidity() {
     let isValid = true;
-    if($("#title").val() == "") //titolo ricetta mancante
+    if($("#title").val() == "" || $("#title").val().indexOf("\\")) //titolo ricetta mancante
     {
         scrollToError($("#title"));
         isValid = false;
@@ -304,7 +304,7 @@ function scrollToError(elem, offset = 200) {
 
 function createFormData() {
     let formData = new FormData();
-    formData.append("title", $("#title").val());
+    formData.append("title", $("#title").val().replaceAll("/", ' ').replaceAll('\\', ' '));
     formData.append("description", $("#subtitle").val());
     formData.append("category", $("#category").val());
     formData.append("difficulty", $("#difficulty").val());
