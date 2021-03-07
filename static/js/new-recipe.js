@@ -213,7 +213,6 @@ function removeStep() {
 function saveRecipe() {
     if(!checkRecipeValidity())
         return;
-    //TODO: send to server
     console.log("Ho passato il test");
     const data = createFormData();
     for(let key of data.entries())
@@ -229,7 +228,6 @@ function saveRecipe() {
         .catch((jqXHR, test_status, str_error) => {
             console.log(jqXHR);
             $("#btnSaveRecipe").prop("disabled", false);
-            //TODO: snackbar
             $(".snackbar").addClass("active").text(jqXHR.responseJSON.message);
             //scrollToError($("#title"))
             setTimeout(() => {

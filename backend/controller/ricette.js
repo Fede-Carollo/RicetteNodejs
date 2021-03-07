@@ -43,7 +43,6 @@ exports.PostRicetta = (req, res, next) => {
                 description: bodyStep[1],
                 imgs: [...filePaths]
             }
-            //TODO: inventarsi come aggiungere i file
             ricetta.steps.push(step);
         }
     
@@ -76,5 +75,20 @@ exports.GetAllRecipes = (req, res, next) => {
         })
         .catch((err) => {
             res.status(500).json({message: "Impossibile caricare le ricette al momento"});
+        })
+}
+
+exports.GetRecipe = (req, res, next) => {
+    const id = req.params.id;
+    Ricetta.findOne({_id: id})
+        .then((recipe) => {
+            if(recipe)
+            {
+                res.status(200).json({message: "Recipe fetched successfully", recipe: recipe});
+            }
+            else
+            {
+                res.status(404).json({message: "Ricetta non trovata"});
+            }
         })
 }

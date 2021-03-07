@@ -16,4 +16,6 @@ router.post("",
         RicetteController.PostRicetta)
 
 router.get("", RicetteController.GetAllRecipes)
+
+router.get("/:id", RicetteController.GetRecipe)
 module.exports = router

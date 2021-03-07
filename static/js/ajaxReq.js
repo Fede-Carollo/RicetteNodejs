@@ -30,7 +30,7 @@ function ajaxMultipartCall (url, method, parameters, recipeName ) {
 		$.ajax({
 			url: url, //default: currentPage
 			type: method,
-			contentType: false,
+			contentType: false,	//prevent jquery to set headers
 			processData: false,
 			cache: false,
 			data: parameters,

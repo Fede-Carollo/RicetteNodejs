@@ -13,8 +13,14 @@ jQuery(() => {
         ajaxCall("/api/ricette/", "GET", null)
         .then((response) => {
             console.log(response);
-            for(let recipe of response.ricette)
+            if(response.ricette.length > 0)
+              for(let recipe of response.ricette)
                 createRecipe(recipe);
+            else
+            {
+              $(".grid-recipes").hide();
+              $(".missing-recipes").show("ease");
+            }
         })
     })
 })
@@ -47,7 +53,7 @@ function createRecipe(recipe) {
     `</div>
       <div class="card-footer">` +
       `<small class="text-muted">${(new Date(recipe.createdAt)).toLocaleDateString()}</small>` +
-      `<small class="text-muted"><a href="/view-recipe.html?id=${recipe._id}">${recipe.creatorName || ""}</a></small>` +
+      `<small class="text-muted"><a href="/view-recipe.html?id=${recipe.creatorId}">${recipe.creatorName || ""}</a></small>` +  //TODO: indirizzo sbagliato
     `</div>
   </div>`
 

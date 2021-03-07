@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 })
 
 app.use(express.static(path.join(__dirname,"../static")));
+app.use(express.static(path.join(__dirname,"")));
 
 app.use("/api/auth", AuthRoute);
 app.use("/api/ricette", RicetteRoute)

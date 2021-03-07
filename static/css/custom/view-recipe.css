@@ -1,0 +1,39 @@
+.recipe-info{
+    font-size: 1.1rem;
+    color: gray;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    flex-shrink: 1;
+    border-bottom: 3px solid gray;
+    padding-bottom: 5px;
+    position: sticky;
+}
+
+.recipe-info div{
+    width: 33%;
+    text-transform: capitalize;
+}
+
+.recipe-info div div{
+    width: 100%;
+
+}
+
+.recipe-info div:nth-child(2) div{
+    text-align: center;
+}
+
+.recipe-info div:nth-child(3) div{
+    text-align: end;
+}
+
+ul.ingredients-ul {
+    list-style: disc;
+    text-transform: capitalize;
+}
+
+.thin-bold{
+    font-weight: 600
+}

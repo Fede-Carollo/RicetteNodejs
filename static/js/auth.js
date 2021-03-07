@@ -35,7 +35,7 @@ class Auth {
                 console.log(data);
                 Auth._instancedClass.saveLogin(data);
                 Auth._instancedClass.hasAlreadyTriedAuth = true;
-                window.location.href = redirectRoute; //TODO: redirect specifico
+                window.location.href = redirectRoute;
                 resolve();
             })
             .catch((jqXHR, test_status, str_error) => {
@@ -113,7 +113,6 @@ class Auth {
                 const expiresIn = this.tokenInfo.expiresIn.getTime() - now.getTime();
                 if(expiresIn > 0 )
                 {
-                    //TODO: controllo sul server
                     ajaxCall("/api/auth/checkToken", "POST", null)
                         .then((data) => {
                             this.saveLogin(data);

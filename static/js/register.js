@@ -1,7 +1,6 @@
 "use strict";
 
 const ANIMATION_TIME = 250; //ms
-import { Auth } from "./auth.js"
 const auth = Auth.instanceClass();
 
 let from;
@@ -80,7 +79,6 @@ function CheckRegisterValidity() {
     }
     else
         $("#passwordError").hide(ANIMATION_TIME);
-    //TODO: controlli sul resto
     //conferma password
     if($("#password").val() !== $("#confirmPassword").val())
     {

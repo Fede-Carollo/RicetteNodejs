@@ -82,7 +82,6 @@ exports.signup = (req, res, next) => {
 }
 
 exports.checkToken = (req, res, next) => {
-    //TODO: caricare utente
     User.findOne({_id: req.userData.id})
     .then((user) => {
         const token = createToken({userId: req.userData.id});
