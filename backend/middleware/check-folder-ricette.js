@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const ROOT = "./backend/uploads";
+const ROOT = "./backend/uploads/recipes";
 
 module.exports = (req,res, next) => {
     const userpath = path.join(ROOT,req.userData.id);

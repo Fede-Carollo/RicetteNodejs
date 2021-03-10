@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const RicetteController = require('../controller/ricette');
 const checkAuth = require('../middleware/check-auth');
-const checkFolder = require('../middleware/check-folder');
+const checkFolder = require('../middleware/check-folder-ricette');
 const saveFiles = require('../middleware/save-files');
 
 //router.get("/:id", AuthController.confirmMail)

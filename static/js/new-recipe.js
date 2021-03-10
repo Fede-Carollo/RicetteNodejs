@@ -232,7 +232,7 @@ function saveRecipe() {
         .catch((jqXHR, test_status, str_error) => {
             console.log(jqXHR);
             $("#btnSaveRecipe").prop("disabled", false);
-            $(".snackbar").addClass("active").text(jqXHR.responseJSON.message);
+            $(".snackbar").addClass("active").text(jqXHR.responseJSON.message || "Qualcosa è andato storto");
             //scrollToError($("#title"))
             setTimeout(() => {
                 $(".snackbar").removeClass("active");
