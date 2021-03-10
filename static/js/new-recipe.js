@@ -23,6 +23,10 @@ jQuery(() => {
             })
         })
     $("#addNewIngrediente").on("click", addNewIngrediente)
+    $("#newIngrediente").on("keyup", (event) => {
+        if(event.key == "Enter")
+            addNewIngrediente();
+    })
     generateStep();
 
     $("#btnAddStep").on("click", generateStep)

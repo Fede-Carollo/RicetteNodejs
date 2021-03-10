@@ -36,7 +36,7 @@ exports.PostRicetta = (req, res, next) => {
             })
     
             const filePaths =  stepFiles.map(file => {
-                return file.path.replace("backend\\","");
+                return file.path.replace("backend\\uploads\\","");
             })
             const step = {
                 title: bodyStep[0],
@@ -90,5 +90,8 @@ exports.GetRecipe = (req, res, next) => {
             {
                 res.status(404).json({message: "Ricetta non trovata"});
             }
+        })
+        .catch(err => {
+            res.status(404).json({message: "Ricetta non trovata"});
         })
 }

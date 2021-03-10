@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const jwtkey = require('../keys/jwt-key')
 
 
-exports.login= (req, res, next) => {
+exports.login = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     let fetchedUser = null;
@@ -54,7 +54,8 @@ exports.signup = (req, res, next) => {
                 email: req.body.email,
                 password: hashedPassword,
                 nome: req.body.nome,
-                cognome: req.body.cognome
+                cognome: req.body.cognome,
+                citazione: req.body.citazione
             };
             const user = new User(params);
             user.save()
@@ -81,6 +82,22 @@ exports.signup = (req, res, next) => {
         })
 }
 
+exports.saveProfilePhoto = (req, res, next) => {
+    console.log("Qui ci sono arrivato");
+    const filepath = req.file.path.replace("backend\\uploads\\", "");
+    User.findOne({_id: req.userData.id})
+        .then((user) => {
+            User.findByIdAndUpdate(req.userData.id, {profilePhoto: filepath})
+                .then((specs) => {
+                    console.log(specs)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+    
+}
+
 exports.checkToken = (req, res, next) => {
     User.findOne({_id: req.userData.id})
     .then((user) => {
@@ -98,6 +115,7 @@ exports.checkToken = (req, res, next) => {
     })
     .catch(err => {
         console.error(err);
+        res.status(500).json({message: "Errore nell'autenticazione utente"});
     })
     
 }

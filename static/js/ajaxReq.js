@@ -52,3 +52,58 @@ function ajaxMultipartCall (url, method, parameters, recipeName ) {
 		});
 	})
 };
+
+function registerMultipart (url, method, parameters ) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: url, //default: currentPage
+			type: method,
+			contentType: false,	//prevent jquery to set headers
+			processData: false,
+			cache: false,
+			data: parameters,
+			headers: {
+				authorization: /*auth.token ||*/ localStorage.getItem("token")
+			},
+			success: (data, textStatus, request) => {
+				const token = request.getResponseHeader("token");
+				const expiresDuration = request.getResponseHeader("token-expires-in");
+				if(expiresDuration && token)
+				{
+					const auth = Auth.instanceClass();
+					auth.refreshToken(+expiresDuration, token);
+				}
+				resolve(data)
+			},
+			error : (jqXHR, test_status, str_error) => {reject(jqXHR, test_status, str_error)}
+		});
+	})
+};
+
+function savePhoto(url, method, parameters ) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: url, //default: currentPage
+			type: method,
+			contentType: false,	
+			processData: false,
+			cache: false,
+			data: parameters,
+			headers: {
+				authorization: /*auth.token ||*/ localStorage.getItem("token")
+			},
+			success: (data, textStatus, request) => {
+				const token = request.getResponseHeader("token");
+				const expiresDuration = request.getResponseHeader("token-expires-in");
+				if(expiresDuration && token)
+				{
+					const auth = Auth.instanceClass();
+					auth.refreshToken(+expiresDuration, token);
+				}
+				resolve(data)
+			},
+			error : (jqXHR, test_status, str_error) => {reject(jqXHR, test_status, str_error)}
+		});
+	})
+};
+

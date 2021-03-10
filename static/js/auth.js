@@ -45,13 +45,20 @@ class Auth {
         })
     }
 
-    signup(params, redirectRoute = "/") {
+    signup(params, photo, redirectRoute = "/") {
         return new Promise(function(resolve, reject) {
             ajaxCall("/api/auth/signup", "POST", params)
             .then(data => {
                 console.log(data);
                 Auth._instancedClass.saveLogin(data);
                 Auth._instancedClass.hasAlreadyTriedAuth = true;
+                savePhoto("/api/auth/saveProfilePhoto", "POST", photo)
+                .then((message) => {
+                    console.log(message);
+                })
+                .catch((jqXHR, test_status, str_error) => {
+                    console.log(jqXHR, test_status, str_error);
+                })
                 window.location.href = redirectRoute;
                 resolve();
             })

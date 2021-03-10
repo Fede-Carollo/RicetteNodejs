@@ -1,0 +1,108 @@
+.img-preview{
+    width: 300px;
+    height: 300px;
+    background: #ccc;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    border-radius: 50%;
+    border: 4px solid #AAA;
+    position: relative;
+    transition: all 0.2s
+}
+
+.img-preview.focus{
+    border: 4px solid red;
+}
+
+.img-preview.focus .hover.show *{
+    color: red
+}
+
+
+.img-preview .hover i{
+    transition: ease 0.2s;
+}
+.img-preview:hover .hover i{
+    color: white;
+}
+
+.img-preview .hover{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all ease .2s;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+.img-preview .hover.show{
+    background-color: rgba(255,255,255,0.4);
+}
+
+.img-preview .hover.show span{
+    color: inherit;
+}
+
+
+
+.img-preview:hover .hover{
+    opacity: 1;
+}
+
+.img-preview .hover.show{   /*Quando non è ancora stata caricata un'immagine*/
+    opacity: 1;
+}
+.img-preview:hover .hover.show{   
+    opacity: 1;
+    color: #fff;
+}
+
+.img-preview.focus:hover{
+    border: white solid;
+}
+
+.img-preview.focus:hover .hover *{
+    color: white;
+}
+
+.hover span{
+    font-size: .8rem;
+    color: #fff;
+}
+
+.img-container{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+.img-container img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+#removeImg{
+    font-size: 0.95rem;
+    text-decoration: underline;
+    transition: color 0.2s
+}
+
+#removeImg:hover{
+    color: darkblue;
+    cursor: pointer;
+}

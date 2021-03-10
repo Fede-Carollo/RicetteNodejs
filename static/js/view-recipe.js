@@ -44,7 +44,7 @@ function renderContent(steps) {
     console.log("Steps", steps);
     let stepCount = 1;
     steps.forEach(step => {
-        const container = $("<div></div>");
+        const container = $("<div class='mt-5'></div>");
         const title = $("<h2 class='thin-bold'></h2>").text("Step " + stepCount++  + " - " + step.title);
         const description = $("<p></p>").text(step.description.replaceAll("\n","<br/>"));
         let imgs = [];
@@ -56,6 +56,7 @@ function renderContent(steps) {
         imgs.forEach(img => {
             container.append(img)
         })
+        container.append("<hr></hr>");
         container.appendTo($("#recipe-content .steps-list .recipe-steps"))
     })
 }

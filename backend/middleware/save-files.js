@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require("path");
-const ROOT = "./backend/uploads";
+const ROOT = "./backend/uploads/recipes/";
 const fs = require("fs");
 
 const storage = multer.diskStorage({
