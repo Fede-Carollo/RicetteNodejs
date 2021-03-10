@@ -2,6 +2,7 @@ const Categoria = require('../models/categorie');
 const Ricetta = require('../models/ricetta');
 const User = require('../models/user');
 
+
 exports.GetAllCategorie = (req, res, next) => {
     Categoria.find()
         .then((categories) => {
@@ -25,12 +26,13 @@ exports.PostRicetta = (req, res, next) => {
             difficulty: req.body.difficulty,
             ingredienti: typeof(req.body.ingredienti) == 'object'? [...req.body.ingredienti]: [req.body.ingredienti],
             timeNeeded: req.body.timeNeeded,
+            headerPhoto: req.files.headerphoto[0].path.replace("backend\\uploads\\", ""),
             steps: []
         }
     
         for(let i = 0; i < +req.body.stepNumber; i++) {
             const bodyStep = req.body["step" + i];
-            const stepFiles = req.files.filter(file => {
+            const stepFiles = req.files.imgs.filter(file => {
                 const step =  parseInt(file.originalname.substr(5)).toString();
                 return step == i;
             })

@@ -18,6 +18,7 @@ jQuery(() => {
 })
 
 function renderRecipe(recipe) {
+    $(".masthead").css({"background-image": `url('${"/" + recipe.headerPhoto.replaceAll(/\\/g, "/")}')`})
     $("#recipe-title").text(recipe.title);
     $("#recipe-description").text(recipe.description)
     $("#recipe-creator").text(recipe.creatorName).prop("href", `/user.html?id=${recipe.creatorId}`)

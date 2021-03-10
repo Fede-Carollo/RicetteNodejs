@@ -10,6 +10,7 @@ auth.getAuthState()
 
 let files = [];
 let stepAttuale = -1;
+let headerPhoto = null;
 
 jQuery(() => {
     $("#title").trigger("focus");
@@ -34,7 +35,23 @@ jQuery(() => {
     $("#btnRemoveStep").on("click", removeStep)
 
     $("#btnSaveRecipe").on("click", saveRecipe)
+
+    $("#header-filepicker").on("change", caricaFotoRicetta);
 })
+
+function caricaFotoRicetta(){
+    if($("#header-filepicker").prop("files").length > 0)
+    {
+        let urlreader = new FileReader();
+        urlreader.onload = (content) => {
+            let src = content.target.result.toString();
+            $("header.masthead").css("background-image", "url('" + src.replace(/(\r\n|\n|\r)/gm, "") + "')");
+            headerPhoto = $("#header-filepicker").prop("files")[0];
+            $("#header-filepicker").next().text("Modifica foto ricetta")
+        }
+        urlreader.readAsDataURL($("#header-filepicker").prop("files")[0]);
+    }
+}
 
 function addNewIngrediente() {
     if($("#newIngrediente").val().length > 0) {
@@ -256,6 +273,7 @@ function checkRecipeValidity() {
         return isValid;
     }
 
+
     else if(!$("#timeNeeded").val() || $("#timeNeeded").val() <= 0){
         scrollToError($("#timeNeeded"));
         $("#timeNeeded").val(0)
@@ -299,6 +317,15 @@ function checkRecipeValidity() {
             $("#stepDescrError" + i).text("").hide("ease");
         }
     }
+    if(isValid)
+    {
+        if(!headerPhoto)
+        {
+            isValid = false;
+            scrollToError($("#header-filepicker").next());
+        }
+    }
+    
     return isValid;
 }
 
@@ -335,5 +362,7 @@ function createFormData() {
             formData.append("imgs", json.files[j],"step-"+ position + "-img-" + j + ext);
         }
     }
+    const ext = headerPhoto.name.substr(headerPhoto.name.lastIndexOf("."));
+    formData.append("headerphoto", $("#header-filepicker").prop("files")[0], "headerphoto" + ext);
     return formData;
 }

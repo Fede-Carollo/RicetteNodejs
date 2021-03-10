@@ -8,12 +8,20 @@ const storage = multer.diskStorage({
     const userpath = path.join(ROOT,req.userData.id);
     const recipe = req.headers.recipename;
     const recipePath = path.join(userpath,recipe);
-    const step = "step" + parseInt(file.originalname.substr(5)).toString();
-    const final = path.join(recipePath, step);
-    if(!fs.existsSync(final))
-      fs.mkdirSync(final);
-    console.log(final);
-      cb(null, final);
+    if(file.originalname == "headerphoto.jpg" || file.originalname == "headerphoto.png")
+    {
+      cb(null, recipePath);
+    }
+    else
+    {
+      const step = "step" + parseInt(file.originalname.substr(5)).toString();
+      const final = path.join(recipePath, step);
+      if(!fs.existsSync(final))
+        fs.mkdirSync(final);
+      console.log(final);
+        cb(null, final);
+    }
+    
       
   },
   filename: (req, file, cb) => {
@@ -25,4 +33,11 @@ const storage = multer.diskStorage({
     cb(null, name + "-" + Date.now() + ext);
   }
 })
-module.exports = multer({storage: storage}).array("imgs");
+module.exports = multer({storage: storage}).fields([
+  {
+    name: "headerphoto", maxCount: 1
+  },
+  {
+    name: "imgs"
+  }
+]);

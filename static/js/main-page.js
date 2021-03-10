@@ -28,7 +28,7 @@ jQuery(() => {
 function createRecipe(recipe) {
     let newRecipe = `<div class="container-recipe">
     <div class="card my-card" onclick="window.location.href='/view-recipe.html?id=${recipe._id}'">
-    <img class="card-img-top" src="${recipe.mainImg || "/img/about-bg.jpg"}" alt="">` +    //TODO: default img in base alla categoria
+    <img class="card-img-top" src="${recipe.headerPhoto || "/img/about-bg.jpg"}" alt="">` +    //TODO: default img in base alla categoria
     `<div class="card-body">
         <h5 class="card-title text-center">${recipe.title}</h5>
         <div class="recipe-info">

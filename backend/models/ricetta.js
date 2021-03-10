@@ -10,6 +10,7 @@ const recipeSchema = mongoose.Schema({
     'timeNeeded': {type: String, required: true},
     'category': {type: String},
     'ingredienti': [String],
+    'headerPhoto': {type: String, required: true},
     'steps': [{
         'title': {type: String, required: true},
         'description': {type: String, required: true},
