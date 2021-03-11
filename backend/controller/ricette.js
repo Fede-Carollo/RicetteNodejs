@@ -97,3 +97,14 @@ exports.GetRecipe = (req, res, next) => {
             res.status(404).json({message: "Ricetta non trovata"});
         })
 }
+
+exports.GetUserRecipes = (req, res, next) => {
+    const id = req.params.id;
+    Ricetta.find({creatorId: id})
+        .then((recipes) => {
+            res.status(200).json({recipes: recipes, message: "Recipes fetched successfully"});
+        })
+        .catch(err => {
+            res.status(500).json({message: "Qualcosa è andato storto"});
+        })
+}

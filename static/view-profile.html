@@ -21,6 +21,7 @@
   <!-- Custom styles for this template -->
   <link href="css/clean-blog.css" rel="stylesheet">
   <link href="css/custom/index.css" rel="stylesheet">
+  <link href="css/custom/circle-img.css" rel="stylesheet">
 </head>
 
 <body>
@@ -65,8 +66,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <h1>Ricette online</h1>
-            <span class="subheading">Condividi le tue ricette e scopri quelle degli altri</span>
+            <h1 id="heading-h1">Il tuo profilo</h1>
           </div>
         </div>
       </div>
@@ -74,48 +74,34 @@
   </header>
 
   <!-- Main Content -->
-  <div class="container-fluid">
-    <div class="grid-recipes">
-      <!--<div class="container-recipe">
-        <div class="card my-card" onclick="window.location.href='/view-recipe.html?id=6043fc099760d448f8525ff6'">
-          <img class="card-img-top" src="img/about-bg.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title text-center">Card title</h5>
-            <div class="recipe-info">
-              <div>
-                <span>Difficoltà: </span> <span>Principiante</span>
-              </div>
-              <div>
-                <span>Tempo necessario: </span> <span><i class="fa fa-clock"></i> 10'</span>
-              </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="control-group p-2">
+          <h2 id="nome" class="text-center">Giangio Paolo</h2>
+        </div>
+        <div class="control-group p-2">
+          <div class="img-preview" style="border: none" onclick="document.getElementById('image-filepicker').click()">
+            <div class="hover">
+              <i class="fa fa-5x fa-camera"></i>
+              <span>Modifica foto profilo</span>
             </div>
-            <div class="card-text mb-3">
-              <p>
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-              </p>
-              <div class="blur">
-
-              </div>
-              <div class="continue-reading">
-                <a href="/view-recipe.html?id=6043fc099760d448f8525ff6">Continua a leggere</a>
-                <i class="fa fa-arrow-right"></i>
-              </div>
+            <div class="img-container">
+              <img id="profilePhoto" src="" alt="">
             </div>
-            
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">6/3/2021</small>
-            <small class="text-muted"><a href="/view-recipe.html?id=6043fc099760d448f8525ff6">Carollo Federico</a></small>
+            <input id="image-filepicker" type="file" single accept="image/*" style="display: none">
           </div>
         </div>
+        <div class="control-group p-2">
+          <blockquote id="citazione" class="text-center">Burger king</blockquote>
+        </div>
       </div>
-      <div class="container-recipe">hgfhgh</div>
-      <div class="container-recipe">gfhgh</div>
-      <div class="container-recipe">gfhgh</div>
-      <div class="container-recipe">gfhgh</div>-->
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="grid-recipes">
+    
     </div>
     <div class="missing-recipes" style="display: none">
       <div class="container d-flex flex-column">
@@ -126,6 +112,7 @@
       </div>
     </div>
   </div>
+  
 
   <hr>
 
@@ -175,7 +162,7 @@
   <script src="js/clean-blog.min.js"></script>
   <script src="js/ajaxReq.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/main-page.js"></script>
+  <script src="js/view-profile.js"></script>
 </body>
 
 </html>

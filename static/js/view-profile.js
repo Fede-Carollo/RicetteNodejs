@@ -1,31 +1,40 @@
+"use strict";
 const auth = Auth.instanceClass();
-jQuery(() => {
-    auth.getAuthState().then((isLogged) => {
-        if(isLogged)
-        {
-            $("#liLogin").hide();
-        }
-        else
-        {
-            $("#liProfile").hide();
-        }
+let id;
 
-        ajaxCall("/api/ricette/", "GET", null)
-        .then((response) => {
+jQuery(() => {
+    const params = new URLSearchParams(window.location.search);
+    id = params.get('id');
+    if(!id)
+        window.location.href = "/404pagenotfound.html";
+        
+    ajaxCall(`/api/auth/user/${id}`, "GET", null)
+        .then(response => {
             console.log(response);
-            if(response.ricette.length > 0)
-              for(let recipe of response.ricette)
-                createRecipe(recipe);
-            else
-            {
-              $(".grid-recipes").hide();
-              $(".missing-recipes").show("ease");
-            }
+            renderUser(response.user);
+            ajaxCall(`/api/ricette/user/${response.user._id}`, "GET", null)
+                .then(response => {
+                    console.log(response);
+                    response.recipes.forEach(recipe => {
+                        renderRecipe(recipe);
+                    })
+                })
+                .catch(err => {
+
+                })
         })
-    })
+        .catch((jqXHR, test_status, str_error) => {
+            window.location.href = "/404pageNotFound.html";
+        })
 })
 
-function createRecipe(recipe) {
+function renderUser(user) {
+    $("#nome").text(`${user.cognome} ${user.nome}`);
+    $("#profilePhoto").prop('src', user.profilePhoto)
+    $("#citazione").text(user.citazione)
+}
+
+function renderRecipe(recipe) {
     let newRecipe = `<div class="container-recipe">
     <div class="card my-card" onclick="window.location.href='/view-recipe.html?id=${recipe._id}'">
     <img class="card-img-top" src="${recipe.headerPhoto || "/img/about-bg.jpg"}" alt="">` +    //TODO: default img in base alla categoria

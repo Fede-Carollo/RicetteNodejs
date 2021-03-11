@@ -20,4 +20,7 @@ router.post("/saveProfilePhoto",
             saveProfilePhoto,
             AuthController.saveProfilePhoto)
 
+router.get("/user/:id", 
+                AuthController.getUserProfile)
+
 module.exports = router
