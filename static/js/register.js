@@ -10,6 +10,7 @@ jQuery(() => {
     from = params.get('from');
     auth.getAuthState()
     .then((isLogged) => {
+        updateHeader(isLogged);
         if(isLogged) {
                 if(from)
                     window.location.href = from;

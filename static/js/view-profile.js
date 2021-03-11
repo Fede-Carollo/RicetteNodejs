@@ -14,6 +14,7 @@ jQuery(() => {
         window.location.href = "/404pagenotfound.html";
     auth.getAuthState()
       .then((isLogged) => {
+        updateHeader(isLogged);
         if(isLogged)  //TODO: invertire la logica
         {
           if(auth.user.id == id)

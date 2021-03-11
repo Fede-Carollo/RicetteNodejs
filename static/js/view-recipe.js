@@ -7,6 +7,10 @@ jQuery(() => {
     id = params.get('id');
     if(!id)
         window.location.href = "/404pagenotfound.html";
+    auth.getAuthState()
+        .then((isLogged) => {
+            updateHeader(isLogged);
+        })
     ajaxCall("/api/ricette/" + id, "GET", null)
         .then(response => {
             console.log(response);

@@ -1,12 +1,6 @@
 const auth = Auth.instanceClass();
 
-auth.getAuthState()
-    .then((isLogged) => {
-        if(!isLogged)
-        {
-            window.location.href = "/login.html?from=nuova-ricetta.html"
-        }
-    })
+
 
 let files = [];
 let stepAttuale = -1;
@@ -16,6 +10,14 @@ jQuery(() => {
     $("#title").trigger("focus");
     $("#ingredientiError").hide();
 
+    auth.getAuthState()
+    .then((isLogged) => {
+        updateHeader(isLogged);
+        if(!isLogged)
+        {
+            window.location.href = "/login.html?from=nuova-ricetta.html"
+        }
+    })
     ajaxCall("/api/ricette/categorie", "GET", null)
         .then((response) => {
             console.log(response);

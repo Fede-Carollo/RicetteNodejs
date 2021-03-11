@@ -1,14 +1,7 @@
 const auth = Auth.instanceClass();
 jQuery(() => {
     auth.getAuthState().then((isLogged) => {
-        if(isLogged)
-        {
-            $("#liLogin").hide();
-        }
-        else
-        {
-            $("#liProfile").hide();
-        }
+        updateHeader(isLogged)
 
         ajaxCall("/api/ricette/", "GET", null)
         .then((response) => {
