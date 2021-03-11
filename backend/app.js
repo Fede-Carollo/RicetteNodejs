@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const AuthRoute = require("./routes/auth");
 const RicetteRoute = require("./routes/ricette");
+const refreshToken = require("./middleware/refreshToken");
 const app = express();
 const mongoose = require('mongoose');
 

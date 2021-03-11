@@ -4,13 +4,13 @@ const RicetteController = require('../controller/ricette');
 const checkAuth = require('../middleware/check-auth');
 const checkFolder = require('../middleware/check-folder-ricette');
 const saveFiles = require('../middleware/save-files');
-
-//router.get("/:id", AuthController.confirmMail)
+const refreshToken = require('../middleware/refreshToken');
 
 router.get("/categorie", RicetteController.GetAllCategorie);
 
 router.post("", 
         checkAuth,
+        refreshToken,
         checkFolder,
         saveFiles,
         RicetteController.PostRicetta)
