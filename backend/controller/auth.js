@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Recipe = require('../models/ricetta')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtkey = require('../keys/jwt-key')
@@ -129,6 +130,39 @@ exports.getUserProfile = (req, res, next) => {
         .catch((err) => {
             res.status(500).json({message: "Qualcosa è andato storto"});
         })
+}
+
+exports.updateName = async function (req, res, next) {
+    try 
+    {
+        await User.updateOne({_id: req.userData.id}, {
+            $set: {"nome": req.body.nome, "cognome": req.body.cognome}
+        })
+        await Recipe.updateMany({creatorId: req.userData.id}, {$set: {creatorName: `${req.body.cognome} ${req.body.nome}`}})
+        res.status(201).json({"message": "Updated successfully"});
+    } catch (error) {
+        res.status(500).json({"message": "Error updating"})
+    }
+    
+}
+
+exports.updateNameFile = async function (req, res, next) {
+    try 
+    {
+        await User.updateOne({_id: req.userData.id}, {
+            $set: {
+                "nome": req.body.nome, 
+                "cognome": req.body.cognome,
+                "profilePhoto": req.file.path.replace("backend\\uploads\\", "")
+            }
+        })
+        await Recipe.updateMany({creatorId: req.userData.id}, {$set: {creatorName: `${req.body.cognome} ${req.body.nome}`}})
+        res.status(201).json({message: "User updated successfully"});
+    }
+    catch (error) 
+    {
+        res.status(500).json({message: "Errore nell'aggiornamento dell'utente"})
+    }
 }
 
 

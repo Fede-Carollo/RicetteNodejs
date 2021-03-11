@@ -37,14 +37,21 @@
     align-items: center;
     justify-content: center;
     align-content: center;
+    transition: .2s ease;
     /*box-shadow: 2px 2px 2px rgba(0, 0, 0, 1)*/
 }
+@media(min-width: 1200px) {
+    .container-recipe{
+        height: 600px
+    }
+}
 
-@media (min-width: 1600px) {
+@media (min-width: 1900px ) {
     .container-recipe{
         height: 900px
     }
 }
+
 
 .container-recipe .my-card{
     width: 95%;

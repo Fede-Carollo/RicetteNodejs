@@ -23,4 +23,12 @@ router.post("/saveProfilePhoto",
 router.get("/user/:id", 
                 AuthController.getUserProfile)
 
+router.post("/updateName", 
+                checkAuth,
+                AuthController.updateName)
+
+router.post("/updateNameFile", 
+                checkAuth,
+                saveProfilePhoto,
+                AuthController.updateNameFile)
 module.exports = router

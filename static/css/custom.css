@@ -29,7 +29,8 @@
     border-radius: 0;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-align: center;
-    transition: ease all .5s
+    transition: ease all .5s;
+    z-index: 10000
 }
 
 header.masthead .page-heading{

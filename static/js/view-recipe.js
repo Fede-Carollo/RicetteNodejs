@@ -13,12 +13,17 @@ jQuery(() => {
             renderRecipe(response.recipe);
         })
         .catch((jqXHR, test_status, str_error) => {
-            window.location.href = "/404pageNotFound.html";
+            if(jqXHR.responseJSON)
+                window.location.href = "/404pageNotFound.html";
+            else
+            {
+                //TODO: gestione errore
+            }
         })
 })
 
 function renderRecipe(recipe) {
-    $(".masthead").css({"background-image": `url('${"/" + recipe.headerPhoto.replaceAll(/\\/g, "/")}')`})
+    $(".masthead").css({"background-image": `url('${recipe.headerPhoto? ("/" +  recipe.headerPhoto.replaceAll(/\\/g, "/")) : "img/new-recipe.jpg"}')`})
     $("#recipe-title").text(recipe.title);
     $("#recipe-description").text(recipe.description)
     $("#recipe-creator").text(recipe.creatorName).prop("href", `/view-profile.html?id=${recipe.creatorId}`)
