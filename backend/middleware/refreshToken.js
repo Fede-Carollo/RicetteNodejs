@@ -12,9 +12,9 @@ function createToken(params, expires = "1h") {
 module.exports = (req, res, next) => {
     if(req.userData)
     {
-        const token = createToken({id: req.userData.id});
+        const token = createToken({userId: req.userData.id});
         res.set('token-expires-in', 3600);
-        res.set('token', token);
+        res.set('token',`Bearer ${token}`);
     }
     next();
 }

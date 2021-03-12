@@ -100,7 +100,7 @@ exports.saveProfilePhoto = (req, res, next) => {
 }
 
 exports.checkToken = (req, res, next) => {
-    User.findOne({_id: req.userData.id})
+    User.findById(req.userData.id)
     .then((user) => {
         const token = createToken({userId: req.userData.id});
         res.status(200).json({
@@ -164,6 +164,11 @@ exports.updateNameFile = async function (req, res, next) {
         res.status(500).json({message: "Errore nell'aggiornamento dell'utente"})
     }
 }
+
+
+/*exports.forgotPassword = async function (req, res, next) {
+    
+}*/
 
 
 

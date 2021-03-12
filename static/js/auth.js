@@ -96,7 +96,7 @@ class Auth {
 
     refreshToken = (expiresDuration, token) => {
         const expirationDate = new Date(Date.now() + expiresDuration * 1000);
-        localStorage.setItem("token", "Bearer " + token);
+        localStorage.setItem("token", `${token}`);
         localStorage.setItem("expiresIn", expirationDate.toISOString());
         this.tokenInfo = {
             token: token, expiresIn: expirationDate
@@ -126,9 +126,13 @@ class Auth {
                             this.setAuthTimer(expiresIn);
                             resolve(true);
                         })
-                        .catch(() => {
-                            this.clearAuthData();
-                            this.user = {};
+                        .catch((jqXHR, test_status, str_error) => {
+                            if(jqXHR.status == 401)
+                            {
+                                this.clearAuthData();
+                                this.user = {};
+                                
+                            }
                             resolve(false);
                         })
                     

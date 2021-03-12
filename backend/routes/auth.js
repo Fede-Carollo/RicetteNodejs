@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//const VerifyGoogleToken = require('../middleware/check-google-token');
 const AuthController = require('../controller/auth');
 const checkAuth = require('../middleware/check-auth');
 const refreshToken = require('../middleware/refreshToken');
