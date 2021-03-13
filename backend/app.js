@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     .catch((err) => res.status(500).json({message: "Impossibile connettersi al DB"}));
 })
 
-app.use(express.static(path.join(__dirname,"../static")));
+app.use(express.static(path.join(__dirname,"./static")));
 app.use(express.static(path.join(__dirname,"./uploads")));
 
 app.use("/api/auth", AuthRoute);
