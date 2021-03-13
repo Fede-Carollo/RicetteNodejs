@@ -139,7 +139,7 @@ exports.updateName = async function (req, res, next) {
     try 
     {
         await User.updateOne({_id: req.userData.id}, {
-            $set: {"nome": req.body.nome, "cognome": req.body.cognome}
+            $set: {"nome": req.body.nome, "cognome": req.body.cognome, "citazione": req.body.citazione}
         })
         await Recipe.updateMany({creatorId: req.userData.id}, {$set: {creatorName: `${req.body.cognome} ${req.body.nome}`}})
         res.status(201).json({"message": "Updated successfully"});
@@ -156,6 +156,7 @@ exports.updateNameFile = async function (req, res, next) {
             $set: {
                 "nome": req.body.nome, 
                 "cognome": req.body.cognome,
+                "citazione": req.body.citazione,
                 "profilePhoto": req.file.path.replace("backend\\uploads\\", "")
             }
         })

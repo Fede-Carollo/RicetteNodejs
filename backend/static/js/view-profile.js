@@ -71,6 +71,7 @@ function initModal(user) {
   const initialValues = {
     nome: user.nome,
     cognome: user.cognome,
+    citazione: user.citazione,
     file: false //false non modificato, true si
   }
   $("#editProfile").on("click", () => {
@@ -79,6 +80,7 @@ function initModal(user) {
 
   $("#editNome").val(user.nome);
   $("#editCognome").val(user.cognome);
+  $("#editCitazione").val(user.citazione);
   $("#edit-filepicker").on("change", () => {
     if($("#edit-filepicker").prop("files")[0])
     {
@@ -93,10 +95,12 @@ function initModal(user) {
   })
   $("#btnSave").on("click", () => {
     const formData = new FormData();
+    if(!checkValidity())
+      return;
     switch(checkEdit(initialValues))
     {
       case 0: //solo testo
-        ajaxCall("/api/auth/updateName", "POST", {nome: $("#editNome").val(), cognome: $("#editCognome").val()})
+        ajaxCall("/api/auth/updateName", "POST", {nome: $("#editNome").val(), cognome: $("#editCognome").val(), citazione: $("#editCitazione").val()})
           .then((response) => {
             window.location.reload();
           })
@@ -112,24 +116,8 @@ function initModal(user) {
       case 1: //testo e files
         formData.append("nome", $("#editNome").val());
         formData.append("cognome", $("#editCognome").val())
+        formData.append("citazione", $("editCitazione").val())
         formData.append("profilephoto", initialValues.file, "profile-photo" + ext);
-        savePhoto("/api/auth/updateNameFile", "POST", formData)
-          .then((response) => {
-            window.location.reload();
-          })
-          .catch((jqXHR, test_status, str_error) => {
-            if(jqXHR.status == 401)
-            {
-              window.location.href = "login.html?from=view-profile.html?id=" + id;
-            }
-            showSnackBar()
-          })
-        break;
-      case 2: //solo immagine
-        const ext = initialValues.file.name.substr(initialValues.file.name.lastIndexOf("."));
-        formData.append("profilephoto", initialValues.file, "profile-photo" + ext);
-        formData.append("nome", $("#editNome").val());
-        formData.append("cognome", $("#editCognome").val())
         savePhoto("/api/auth/updateNameFile", "POST", formData)
           .then((response) => {
             window.location.reload();
@@ -142,14 +130,39 @@ function initModal(user) {
             showSnackBar();
           })
         break;
-      case 3:
     }
   })
 
   $("#modalEdit").on("show.bs.modal", (event) => {  //Callback del modal
-    $("#editNome, #editCognome").trigger("input");
+    $("#editNome, #editCognome, #editCitazione").trigger("input");
     $("#editProfilePhoto").prop("src", filePath)
   })
+}
+
+function checkValidity() {
+  let isValid = true;
+  if($("#editNome").val().trim().length == 0) 
+  {
+    $("#nomeError").show("ease").text("Inserisci il nome!");
+    isValid = false; 
+  }
+  else
+  {
+    $("#nomeError").hide("ease");
+  }
+
+  if($("#editCognome").val().trim().length == 0) 
+  {
+    $("#cognomeError").show("ease").text("Inserisci il cognome!");
+    isValid = false; 
+  }
+  else
+  {
+    $("#cognomeError").hide("ease");
+  }
+  return isValid;
+
+
 }
 
 function showSnackBar(errMsg = "Si è verificato un errore") {
@@ -161,7 +174,7 @@ function showSnackBar(errMsg = "Si è verificato un errore") {
 }
 
 function checkEdit(initialValues) {
-  if($("#editNome").val() != initialValues.nome || $("#editCognome").val() != initialValues.cognome)
+  if($("#editNome").val() != initialValues.nome || $("#editCognome").val() != initialValues.cognome || $("#editCitazione").val() != initialValues.citazione)
   {
     if(initialValues.file == false) //solo update campi
     {
@@ -174,7 +187,7 @@ function checkEdit(initialValues) {
   }
   else if(initialValues.file != false)
   {
-    return 2;
+    return 1;
   }
   return 3;
 }
