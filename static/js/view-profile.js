@@ -1,7 +1,7 @@
 "use strict";
 const auth = Auth.instanceClass();
 let id;
-let filePath = ""
+let filePath = "";
 
 function getFilePath (){
   return filePath;
@@ -14,14 +14,22 @@ jQuery(() => {
         window.location.href = "/404pagenotfound.html";
     auth.getAuthState()
       .then((isLogged) => {
-        updateHeader(isLogged);
-        if(isLogged)  //TODO: invertire la logica
+        updateHeader(isLogged); 
         {
-          if(auth.user.id == id)
+          if(auth.user.id != id)
           {
-            $("#header").text("Visualizza profilo");
+            $("#heading-h1").text("Visualizza profilo");
+            $("#editProfile").hide();
+          }
+          else
+          {
             $("#editProfile").show();
           }
+        }
+        if(!isLogged)
+        {
+          $("#heading-h1").text("Visualizza profilo");
+          $("#editProfile").hide();
         }
       })
     ajaxCall(`/api/auth/user/${id}`, "GET", null)
@@ -32,9 +40,21 @@ jQuery(() => {
             ajaxCall(`/api/ricette/user/${response.user._id}`, "GET", null)
                 .then(response => {
                     console.log(response);
-                    response.recipes.forEach(recipe => {
+                    if(response.recipes.length > 0)
+                    {
+                      response.recipes.forEach(recipe => {
                         renderRecipe(recipe);
-                    })
+                      })
+                    }
+                    else
+                    {
+                      $(".grid-recipes").hide();
+                      $(".missing-recipes").show("ease");
+                      if(!auth.user.isLogged)
+                      {
+                        $("#pubblicaRicetta").hide();
+                      }
+                    }
                 })
                 .catch(err => {
 
@@ -151,11 +171,9 @@ function checkEdit(initialValues) {
     {
       return 1;
     }
-    //TODO: controllo se anche immagine e chiamate diverse
   }
   else if(initialValues.file != false)
   {
-    //TODO: solo updateImmagine
     return 2;
   }
   return 3;

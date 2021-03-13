@@ -243,7 +243,6 @@ function saveRecipe() {
         console.log(key[0], key[1]);
     }
 
-    //$("#btnSaveRecipe").prop("disabled", true);   //TODO: scommentare
     ajaxMultipartCall("/api/ricette", "POST", data, $("#title").val().trim())
         .then((response) => {
             window.location.href = "/";

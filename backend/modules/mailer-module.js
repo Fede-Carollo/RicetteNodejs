@@ -19,37 +19,40 @@ module.exports = class MailerModule {
   }
 
   sendEmail = (receiver, title, HTMLcontent) => {
-    this.oauth2client.setCredentials({
-      refresh_token: GMAIL_KEYS.refreshToken
-    });
-
-    this.oauth2client.getAccessToken()
-      .then((accessToken) => {
-        const smtpTransport = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            type: 'OAuth2',
-            user: google_cloud.email,
-            clientId: google_cloud.clientID,
-            clientSecret: google_cloud.clientSecret,
-            refreshToken: google_cloud.refreshToken,
-            accessToken: accessToken
+    return new Promise((resolve, reject) => {
+      this.oauth2client.setCredentials({
+        refresh_token: google_cloud.refreshToken
+      });
+  
+      this.oauth2client.getAccessToken()
+        .then((accessToken) => {
+          const smtpTransport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              type: 'OAuth2',
+              user: google_cloud.email,
+              clientId: google_cloud.clientID,
+              clientSecret: google_cloud.clientSecret,
+              refreshToken: google_cloud.refreshToken,
+              accessToken: accessToken
+            }
+          })
+          const mailOptions = {
+            from: google_cloud.email,
+            to: receiver,
+            subject: title,
+            html: HTMLcontent
           }
+          smtpTransport.sendMail(mailOptions, (err, info) => {
+            if(err) reject(err);
+            resolve(info)
+          })
         })
-        const mailOptions = {
-          from: google_cloud.email,
-          to: receiver,
-          subject: "Soggetto",
-          html: content
-        }
-        smtpTransport.sendMail(mailOptions, (err, info) => {
-          if(err) return err;
-          return info;
+        .catch(err => { 
+          reject(err);
         })
-      })
-      .catch(err => { 
-        console.error(error);
-      })
+    })
+    
   }
 }
 

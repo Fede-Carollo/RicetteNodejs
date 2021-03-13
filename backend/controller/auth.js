@@ -3,6 +3,9 @@ const Recipe = require('../models/ricetta')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtkey = require('../keys/jwt-key')
+const mailer = require('../modules/mailer-module')
+const Pending = require('../models/pending');
+const fs = require('fs');
 
 
 exports.login = (req, res, next) => {
@@ -166,10 +169,84 @@ exports.updateNameFile = async function (req, res, next) {
 }
 
 
-/*exports.forgotPassword = async function (req, res, next) {
+exports.forgotPassword = async function (req, res, next) {
+    const random = Math.floor(Math.random()*(99999 -10000 + 1)) + 10000;
+    const pending = new Pending({
+        email: req.body.email,
+        code: random
+    })
+    try 
+    {
+        if(await User.findOne({email: req.body.email}))
+        {
+            console.log(__dirname)
+            let html = fs.readFileSync(`${__dirname}\\..\\template\\forgotpassword.html`, {encoding: "utf8"});
+            html = html.replace("${!codice!}", random);
+            await pending.save();
+            const mail = new mailer();
+            res.status(200).json({message: "mail inviata"})
+            /*mail.sendEmail(req.body.email, "Ripristino password", html)
+                .then((info) => {
+                    console.log("Fatto");
+                    res.status(200).json({message: "mail inviata"})
+                })
+                .catch((error) => {
+                    console.log("Non fatto");
+                    res.status(500).json({message: "Si è verificato un errore"});
+                })
+                */
+        }
+        else {
+            res.status(404).json({message: "La mail inserita non è registrata"})
+        }
+        
+        
+    }
+    catch (error)
+    {
+        res.status(500).json({message: "Qualcosa è andato storto"});
+    }
     
-}*/
+}
 
+exports.checkCode = async function (req, res, next) {
+    const email = req.body.email;
+    const code = req.body.code;
+    try
+    {
+        const pending = await Pending.find({email: email}).sort({_id: -1}).limit(1);
+        if(pending[0].code == code)
+        {
+            res.status(200).json({message: "Code correct"});
+            try
+            {
+                await Pending.deleteMany({email: email});
+            }
+            catch(error) {} //altrimenti finisce nel catch generale e tenta di inviare un codice 500
+        }
+        else
+        {
+            res.status(500).json({message: "Codice non valido"})
+        }
+    }
+    catch (error) {
+        res.status(500).json({message: "Qualcosa è andato storto"})
+    }
+}
+
+exports.updatePassword = async function(req, res, next) {
+    const email = req.body.email;
+    const password = req.body.password;
+    try
+    {
+        await User.updateOne({email: email}, {$set: {password: password}})
+        res.status(201).json({message: "Profile updated successfully"});
+    }
+    catch (err)
+    {
+        res.status(500).json({message: "qualcosa è andato storto, riprova più tardi"});
+    }
+}
 
 
 function createToken(params, expires = "1h") {

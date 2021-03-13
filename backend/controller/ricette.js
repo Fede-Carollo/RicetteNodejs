@@ -100,7 +100,7 @@ exports.GetRecipe = (req, res, next) => {
 
 exports.GetUserRecipes = (req, res, next) => {
     const id = req.params.id;
-    Ricetta.find({creatorId: id})
+    Ricetta.find({creatorId: id}).sort({createdAt: -1})
         .then((recipes) => {
             res.status(200).json({recipes: recipes, message: "Recipes fetched successfully"});
         })

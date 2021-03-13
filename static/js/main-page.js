@@ -46,7 +46,7 @@ function createRecipe(recipe) {
     `</div>
       <div class="card-footer">` +
       `<small class="text-muted">${(new Date(recipe.createdAt)).toLocaleDateString()}</small>` +
-      `<small class="text-muted"><a href="/view-profile.html?id=${recipe.creatorId}">${recipe.creatorName || ""}</a></small>` +  //TODO: indirizzo sbagliato
+      `<small class="text-muted"><a href="/view-profile.html?id=${recipe.creatorId}">${recipe.creatorName || ""}</a></small>` + 
     `</div>
   </div>`
 

@@ -35,4 +35,8 @@ router.post("/updateNameFile",
                 refreshToken,
                 saveProfilePhoto,
                 AuthController.updateNameFile)
+
+router.post("/resetPassword", AuthController.forgotPassword)
+router.post("/checkCode", AuthController.checkCode)
+router.post("/newPassword", AuthController.updatePassword)
 module.exports = router
