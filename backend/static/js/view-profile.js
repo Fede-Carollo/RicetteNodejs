@@ -56,8 +56,8 @@ jQuery(() => {
                       }
                     }
                 })
-                .catch(err => {
-
+                .catch((jqXHR, test_status, str_error) => {
+                  showSnackBar(jqXHR,responseJSON.message || undefined)
                 })
         })
         .catch((jqXHR, test_status, str_error) => {

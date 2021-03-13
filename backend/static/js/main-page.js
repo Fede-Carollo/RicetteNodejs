@@ -15,6 +15,13 @@ jQuery(() => {
               $(".missing-recipes").show("ease");
             }
         })
+        .catch((jqXHR, test_status, str_error) => {
+          $(".snackbar").addClass("active").text(jqXHR.responseJSON.message);
+            setTimeout(() => {
+                $(".snackbar").removeClass("active").text("");
+                
+            }, 5000)
+        })
     })
 })
 

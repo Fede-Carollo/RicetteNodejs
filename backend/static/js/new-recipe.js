@@ -25,6 +25,12 @@ jQuery(() => {
                 $("#category").append("<option class='text-capitalize' value='"+ cat +"'>"+ cat +"</option>")
             })
         })
+        .catch((jqXHR, test_status, str_error) => {
+            $(".snackbar").addClass("active").text(jqXHR.responseJSON.message || "Qualcosa è andato storto");
+            setTimeout(() => {
+                $(".snackbar").removeClass("active");
+            }, 5000)
+        })
     $("#addNewIngrediente").on("click", addNewIngrediente)
     $("#newIngrediente").on("keyup", (event) => {
         if(event.key == "Enter")
