@@ -24,6 +24,6 @@ app.use("/api/auth", AuthRoute);
 app.use("/api/ricette", RicetteRoute)
 
 app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname,"../static/404notFound.html"))
+    res.sendFile(path.join(__dirname,"./static/404notfound.html"))
 })
 module.exports = app;

@@ -21,7 +21,11 @@ jQuery(() => {
                 window.location.href = "/404pageNotFound.html";
             else
             {
-                //TODO: gestione errore
+                $(".snackbar").addClass("active").text(jqXHR.responseJSON.message || "Qualcosa è andato storto");
+                //scrollToError($("#title"))
+                setTimeout(() => {
+                $(".snackbar").removeClass("active");
+            }, 5000)
             }
         })
 })

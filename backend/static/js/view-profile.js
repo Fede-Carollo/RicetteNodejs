@@ -116,7 +116,8 @@ function initModal(user) {
       case 1: //testo e files
         formData.append("nome", $("#editNome").val());
         formData.append("cognome", $("#editCognome").val())
-        formData.append("citazione", $("editCitazione").val())
+        formData.append("citazione", $("#editCitazione").val())
+        const ext = initialValues.file.name.substr(initialValues.file.name.lastIndexOf("."));
         formData.append("profilephoto", initialValues.file, "profile-photo" + ext);
         savePhoto("/api/auth/updateNameFile", "POST", formData)
           .then((response) => {

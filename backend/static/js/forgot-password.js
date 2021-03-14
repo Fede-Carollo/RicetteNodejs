@@ -20,6 +20,7 @@ function setupSendMail(isLogged){
         {
             $("#emailError").hide("ease");
             $("#email").prop("disabled", true);
+            $("#sendEmail").prop("disabled", true);
             ajaxCall("/api/auth/resetPassword", "POST", {email: $("#email").val()})
                 .then((response) => {
                     
@@ -27,7 +28,8 @@ function setupSendMail(isLogged){
                 })
                 .catch((jqXHR, test_status, str_error) => {
                     $("#email").prop("disabled", false);
-                    showSnackBar(jqXHR.responseJSON.message);
+                    $("#sendEmail").prop("disabled", false);
+                    showSnackBar(jqXHR.responseJSON.message || "Si è verificato un errore");
                 })
         }
         else

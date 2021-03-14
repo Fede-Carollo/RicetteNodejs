@@ -1,18 +1,22 @@
 const auth = Auth.instanceClass();
+let ricette = [];
 jQuery(() => {
     auth.getAuthState().then((isLogged) => {
         updateHeader(isLogged)
-
+        resetPaginator();
         ajaxCall("/api/ricette/", "GET", null)
         .then((response) => {
             console.log(response);
             if(response.ricette.length > 0)
-              for(let recipe of response.ricette)
-                createRecipe(recipe);
+            {
+              ricette = response.ricette
+              initPaginator();
+            }
             else
             {
               $(".grid-recipes").hide();
               $(".missing-recipes").show("ease");
+              $("#paginatorRecipes").hide()
             }
         })
         .catch((jqXHR, test_status, str_error) => {
@@ -58,4 +62,94 @@ function createRecipe(recipe) {
   </div>`
 
   $(".grid-recipes").append(newRecipe);
+}
+
+function resetPaginator(){
+  paginator = {
+      currentPage: 0,
+      itemsPerPage: 6,
+      min: 1,
+      max: null
+  }
+}
+function initPaginator()
+{
+    paginator.max = Math.ceil(ricette.length/paginator.itemsPerPage);
+    $("#paginatorRecipes").css("visibility", "visible");
+    //#region aggiornamento numeri paginator
+    while($("#paginatorRecipes .pagination .page-item").length > 2)
+    {
+        $("#paginatorRecipes .pagination .page-item").eq(1).remove();
+    }
+    let next = $("#paginatorRecipes .pagination .page-item").eq(1).remove();
+    for(let i=1; i <= paginator.max; i++)
+    {
+        $("<li class='page-item'><a class='page-link' href='#'>"+ i +"</a></li>")
+            .appendTo($("#paginatorRecipes .pagination").eq(0));
+    }
+    $("#paginatorRecipes .pagination").append(next);
+    $("#paginatorRecipes .pagination .page-item").on("click", (event) => {
+        
+        if(ricette.length == 0)
+        {
+            $(".missing.recipes").show();
+            $(".grid-recipes").hide();
+            $("#paginatorRecipes").hide();
+        }
+        else
+        {
+            $(".missing.recipes").hide();
+            $(".grid-recipes").show();
+            $("#paginatorRecipes").show();
+        }
+        let btn = $(event.target).eq(0);
+        let val = btn.text();
+        let hasChanged = false;
+        if(val.indexOf("«") != -1)
+        {
+            if(paginator.currentPage > paginator.min)
+            {
+                paginator.currentPage--;
+                hasChanged = true;
+            }
+                
+        }
+        else if(val.indexOf("»") != -1)
+        {
+            if(paginator.currentPage < paginator.max)
+            {
+                paginator.currentPage++;
+                hasChanged = true;
+            }
+                
+        }
+        else
+        {
+            if(paginator.currentPage != +val)
+            {
+                paginator.currentPage = +val;
+                hasChanged = true;
+            }
+        }
+        
+        if(hasChanged)
+            showRecipesPage();
+    });
+    ////#endregion
+    $("#paginatorRecipes .pagination .page-item").eq(1).trigger("click");
+}
+
+let paginator = {
+    currentPage: 0,
+    itemsPerPage: 8,
+    min: 1,
+    max: null
+}
+
+function showRecipesPage() {
+  $(".grid-recipes").empty();
+    for(let i = (paginator.currentPage-1)*paginator.itemsPerPage; i < (paginator.currentPage)*paginator.itemsPerPage && i < ricette.length ; i++ )
+        {
+            createRecipe(ricette[i])
+        }
 }
