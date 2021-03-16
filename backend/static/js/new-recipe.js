@@ -64,7 +64,11 @@ function caricaFotoRicetta(){
 function addNewIngrediente() {
     if($("#newIngrediente").val().length > 0) {
         const times = $("<button class='transparent align-vertical show-on-hover' type='button'></button>").on("click", (event) => {
-            const toDelete = $(event.target).parent().parent().parent();
+            let toDelete;
+            if(event.target.localName == 'i')
+                toDelete = $(event.target).parent().parent().parent();
+            else
+                toDelete = $(event.target).parent().parent();
             toDelete.remove();
             if($("#ingredienti").children().length == 0)
             {

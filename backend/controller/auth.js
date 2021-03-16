@@ -70,6 +70,8 @@ exports.signup = (req, res, next) => {
                     nome: req.body.nome,
                     cognome: req.body.cognome
                 }
+                const mail = new mailer();
+                mail.sendEmail(req.body.email, "Registrazione a Online Recipes", FillSignupEmail({nome: user.nome, cognome: user.cognome, email: req.body.email, link: "http://localhost:3000/"}));
                 res.status(201).json({message: "User created successfully", token: token, expiresIn: 3600, tokenId: userId, user: user});
             })
             .catch(err => {
@@ -84,6 +86,16 @@ exports.signup = (req, res, next) => {
         .catch(err => {
             res.status(500).json({message: "Errore nella creazione dell'utente"});
         })
+}
+
+function FillSignupEmail(params) {
+    let file = fs.readFileSync(`${__dirname}\\..\\template\\register.html`, {encoding: 'utf8'});
+    file = file.replace("{!nome!}", params.nome);
+    file = file.replace("{!nome!}", params.nome);
+    file = file.replace("{!cognome!}", params.cognome);
+    file = file.replace("{!email!}", params.email);
+    file = file.replace("{!link!}", params.link);
+    return file;
 }
 
 exports.saveProfilePhoto = (req, res, next) => {
@@ -185,8 +197,7 @@ exports.forgotPassword = async function (req, res, next) {
             html = html.replace("${!codice!}", random);
             await pending.save();
             const mail = new mailer();
-            res.status(200).json({message: "mail inviata"})
-            /*mail.sendEmail(req.body.email, "Ripristino password", html)
+            mail.sendEmail(req.body.email, "Ripristino password", html)
                 .then((info) => {
                     console.log("Fatto");
                     res.status(200).json({message: "mail inviata"})
@@ -195,7 +206,7 @@ exports.forgotPassword = async function (req, res, next) {
                     console.log("Non fatto");
                     res.status(500).json({message: "Si è verificato un errore"});
                 })
-                */
+                
         }
         else {
             res.status(404).json({message: "La mail inserita non è registrata"})
