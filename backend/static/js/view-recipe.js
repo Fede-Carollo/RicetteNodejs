@@ -6,7 +6,7 @@ jQuery(() => {
     const params = new URLSearchParams(window.location.search);
     id = params.get('id');
     if(!id)
-        window.location.href = "/404pagenotfound.html";
+        window.location.href = "/404notfound.html";
     auth.getAuthState()
         .then((isLogged) => {
             updateHeader(isLogged);
@@ -18,7 +18,7 @@ jQuery(() => {
         })
         .catch((jqXHR, test_status, str_error) => {
             if(jqXHR.responseJSON)
-                window.location.href = "/404pageNotFound.html";
+                window.location.href = "/404notfound.html";
             else
             {
                 $(".snackbar").addClass("active").text(jqXHR.responseJSON.message || "Qualcosa è andato storto");
@@ -63,7 +63,7 @@ function renderContent(steps) {
         const description = $("<p></p>").text(step.description.replaceAll("\n","<br/>"));
         let imgs = [];
         step.imgs.forEach(imgPath => {
-            imgs.push($(`<a href="#"><img class="img-fluid" src="/${imgPath.replaceAll(/\\/g, "/")}" alt=""></a>`))
+            imgs.push($(`<a href="#"><img class="img-fluid mt-5" src="/${imgPath.replaceAll(/\\/g, "/")}" alt=""></a>`))
         })
 
         container.append(title).append(description);

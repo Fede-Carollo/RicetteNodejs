@@ -32,14 +32,20 @@ exports.PostRicetta = (req, res, next) => {
     
         for(let i = 0; i < +req.body.stepNumber; i++) {
             const bodyStep = req.body["step" + i];
-            const stepFiles = req.files.imgs.filter(file => {
-                const step =  parseInt(file.originalname.substr(5)).toString();
-                return step == i;
-            })
-    
-            const filePaths =  stepFiles.map(file => {
-                return file.path.replace("backend\\uploads\\","");
-            })
+            let filePaths = [];
+            if(req.files.imgs)
+            {
+                const stepFiles = req.files.imgs.filter(file => {
+                    const step =  parseInt(file.originalname.substr(5)).toString();
+                    return step == i;
+                })
+        
+                
+                filePaths =  stepFiles.map(file => {
+                    return file.path.replace("backend\\uploads\\","");
+                })
+            }
+            
             const step = {
                 title: bodyStep[0],
                 description: bodyStep[1],

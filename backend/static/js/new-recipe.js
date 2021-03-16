@@ -155,7 +155,7 @@ function generateStep() {
         $("#btnRemoveStep").hide("ease");
 
     let newStep = `<div id="step{number}">
-    <h2>Step {stepOrder} <span class="title-step"></span><i class="fa fa-chevron-down" id="collapse{number}"></i></h2>
+    <h2>Step {stepOrder} <span class="title-step" style="display: none;"></span><i class="fa fa-chevron-down" id="collapse{number}"></i></h2>
     <div class="content-step">
       <div class="control-group">
         <div class="form-group floating-label-form-group controls">
@@ -165,7 +165,7 @@ function generateStep() {
         </div>
         <div class="form-group floating-label-form-group controls">
           <label>Descrizione</label>
-          <textarea class="form-control" id="stepDescr{number}" placeholder="Descrizione" wrap="soft">descrizione</textarea>
+          <textarea class="form-control" id="stepDescr{number}" placeholder="Descrizione" style="resize:vertical">descrizione</textarea>
           <p class="help-block text-danger" id="stepDescrError{number}"></p>
         </div>
         <div class="form-group controls">
@@ -218,7 +218,7 @@ $("#collapse" + stepAttuale).on("click", (event) => {
         icon.addClass("fa-chevron-down")
             .removeClass("fa-chevron-right");
         container.show("ease");
-        $("#collapse" + stepAttuale).prev().hide("ease")
+        $("#collapse" + position).prev().hide("ease")
     }
 })
 }

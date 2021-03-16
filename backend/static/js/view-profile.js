@@ -11,7 +11,7 @@ jQuery(() => {
     const params = new URLSearchParams(window.location.search);
     id = params.get('id');
     if(!id)
-        window.location.href = "/404pagenotfound.html";
+        window.location.href = "/404notfound.html";
     auth.getAuthState()
       .then((isLogged) => {
         updateHeader(isLogged); 
@@ -61,7 +61,7 @@ jQuery(() => {
                 })
         })
         .catch((jqXHR, test_status, str_error) => {
-            window.location.href = "/404pageNotFound.html";
+            window.location.href = "/404notfound.html";
         })
 })
 
