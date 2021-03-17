@@ -164,12 +164,12 @@ function generateStep() {
       <div class="control-group">
         <div class="form-group floating-label-form-group controls">
           <label>Titolo</label>
-          <input type="text" class="form-control" placeholder="Titolo" id="stepTitle{number}" value="titolo">
+          <input type="text" class="form-control" placeholder="Titolo" id="stepTitle{number}" value="">
           <p class="help-block text-danger" id="stepTitleError{number}"></p>
         </div>
         <div class="form-group floating-label-form-group controls">
           <label>Descrizione</label>
-          <textarea class="form-control" id="stepDescr{number}" placeholder="Descrizione" style="resize:vertical">descrizione</textarea>
+          <textarea class="form-control" id="stepDescr{number}" placeholder="Descrizione" style="resize:vertical"></textarea>
           <p class="help-block text-danger" id="stepDescrError{number}"></p>
         </div>
         <div class="form-group controls">

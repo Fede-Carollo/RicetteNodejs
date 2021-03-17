@@ -60,7 +60,7 @@ function renderContent(steps) {
     steps.forEach(step => {
         const container = $("<div class='mt-5'></div>");
         const title = $("<h2 class='thin-bold'></h2>").text("Step " + stepCount++  + " - " + step.title);
-        const description = $("<p></p>").text(step.description.replaceAll("\n","<br/>"));
+        const description = $("<p></p>").text(step.description);
         let imgs = [];
         step.imgs.forEach(imgPath => {
             imgs.push($(`<a href="#"><img class="img-fluid mt-5" src="/${imgPath.replaceAll(/\\/g, "/")}" alt=""></a>`))
