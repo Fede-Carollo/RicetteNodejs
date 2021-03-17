@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
     nome: {type: String, required: true},
     cognome: {type: String, required: true},
     profilePhoto: {type: String, default: ''},
-    citazione: {type: String}
+    citazione: {type: String, required: true}
 }, 
 {timestamps: true});
 

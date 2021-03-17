@@ -118,6 +118,15 @@ function CheckRegisterValidity() {
     else
         $("#surnameError").hide(ANIMATION_TIME);
 
+    if($("#citazione").val().toString().length < 3)
+    {
+        $("#citazioneError").text("Inserisci una citazione!")
+            .show(ANIMATION_TIME);
+        isValid = false;
+    }
+    else
+        $("#citazioneError").hide(ANIMATION_TIME); 
+           
     if($("#image-filepicker").prop("files").length == 0)
     {
         isValid = false;
