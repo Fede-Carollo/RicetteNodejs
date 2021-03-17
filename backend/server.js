@@ -1,6 +1,8 @@
 const http = require('http');
 const app = require('./app');
-
+const https = require('https');
+const fs = require('fs');
+const host = "localhost";
 const normalizePort = (val) => {
   let port = parseInt(val, 10);
 
@@ -31,10 +33,19 @@ const onError = (error) => {
   }
 }
 
-
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "5000");
+const httpsPort = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
+const httpsServer = https.createServer({
+  "key": fs.readFileSync(__dirname + "/keys/private.key"),
+  "cert": fs.readFileSync(__dirname + "/keys/certificate.crt")
+}, app);
 
-const server = http.createServer(app);
+httpsServer.on("error", onError);
+httpsServer.listen(httpsPort,host, () => { console.log("Https server listening on port " + httpsPort)});
+const server = http.createServer((req, res) => {
+  res.writeHead(302, {'Location': `https://${host}:${httpsPort}${req.url}`});
+  res.end();
+});
 server.on("error", onError);
-server.listen(port, () => { console.log("listening on port " + port)});
+server.listen(port, host,  () => { console.log("Redirect server listening on port " + port)});
