@@ -12,41 +12,34 @@ exports.login = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     let fetchedUser = null;
-    bcrypt.hash(password, 10)
-    .then(hashedPassword => {
-        User.findOne({email: email})
-        .then(user => {
-            if(!user) {
-                return res.status(401).json({message: "Email o password errati"});
-            }
-            else
-            {
-                fetchedUser = user;
-                bcrypt.compare(password, hashedPassword)
-                .then(valid => {
-                    if(!valid)
-                    {
-                        return res.status(401).json({message: "Email o password errati"});
+    User.findOne({email: email})
+    .then(user => {
+        if(!user) {
+            return res.status(401).json({message: "Email o password errati"});
+        }
+        else
+        {
+            fetchedUser = user;
+            bcrypt.compare(password, user.password)
+            .then(valid => {
+                if(!valid)
+                {
+                    return res.status(401).json({message: "Email o password errati"});
+                }
+                const token = createToken({userId: fetchedUser._id });
+                res.status(200).json({
+                    token: token,
+                    expiresIn: 3600,
+                    tokenId: fetchedUser._id,
+                    message: "user fetched successfully",
+                    user: {
+                        nome: fetchedUser.nome,
+                        cognome: fetchedUser.cognome
                     }
-                    const token = createToken({userId: fetchedUser._id });
-                    res.status(200).json({
-                        token: token,
-                        expiresIn: 3600,
-                        tokenId: fetchedUser._id,
-                        message: "user fetched successfully",
-                        user: {
-                            nome: fetchedUser.nome,
-                            cognome: fetchedUser.cognome
-                        }
-                    })
                 })
-            }
-            
-        })
+            })
+        }
         
-    })
-    .catch(err => {
-        res.status(500).json({message: "Errore nella creazione dell'utente"});
     })
     
 }
