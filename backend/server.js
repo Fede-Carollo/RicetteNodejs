@@ -43,9 +43,10 @@ const httpsServer = https.createServer({
 
 httpsServer.on("error", onError);
 httpsServer.listen(httpsPort,host, () => { console.log("Https server listening on port " + httpsPort)});
-const server = http.createServer((req, res) => {
+/*const server = http.createServer((req, res) => {
   res.writeHead(302, {'Location': `https://${host}:${httpsPort}${req.url}`});
   res.end();
-});
+});*/
+const server = http.createServer(app);
 server.on("error", onError);
 server.listen(port, host,  () => { console.log("Redirect server listening on port " + port)});
